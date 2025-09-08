@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="c.b1.ui.onboarding.OnboardingFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:fitsSystemWindows="false">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpTemplate"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_80sdp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutAds"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/tvNext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vpTemplate">
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                app:dotsColor="#331C1C1C"
+                app:dotsCornerRadius="@dimen/_4sdp"
+                app:dotsSize="@dimen/_4sdp"
+                app:dotsSpacing="@dimen/_2sdp"
+                app:dotsWidthFactor="2.5"
+                app:progressMode="true"
+                app:selectedDotColor="#FF86C0" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvNext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/_32sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:background="@drawable/bg_language_select"
+            android:backgroundTint="#FF0000"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/layoutAds"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/layoutAds"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_74sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

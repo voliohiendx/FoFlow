@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:fitsSystemWindows="false">
+
+        <TextView
+            android:id="@+id/tvStart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_56sdp"
+            android:layout_marginHorizontal="@dimen/_32sdp"
+            android:background="@drawable/bg_language_select"
+            android:backgroundTint="#FF0000"
+            android:gravity="center"
+            android:text="Let start"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutAds"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.831"
+            tools:layout_editor_absoluteX="53dp" />
+
+        <FrameLayout
+            android:id="@+id/layoutAds"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_74sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
