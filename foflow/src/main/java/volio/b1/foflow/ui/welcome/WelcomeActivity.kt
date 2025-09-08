@@ -3,6 +3,7 @@ package volio.b1.foflow.ui.welcome
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -38,6 +39,8 @@ class WelcomeActivity : AppCompatActivity() {
 
             FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
             finish()
+        }
+        this.onBackPressedDispatcher.addCallback(this, true) {
         }
     }
 

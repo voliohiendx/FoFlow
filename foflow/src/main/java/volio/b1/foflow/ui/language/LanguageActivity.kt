@@ -3,6 +3,7 @@ package volio.b1.foflow.ui.language
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -24,7 +25,6 @@ class LanguageActivity : AppCompatActivity() {
         setContentView(layoutId)
         hideNavigationBar()
 
-        val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
         val recyclerView = findViewById<RecyclerView>(R.id.rvLanguage)
@@ -53,12 +53,20 @@ class LanguageActivity : AppCompatActivity() {
                 })
         }
 
+        initListener()
+    }
+
+    fun initListener() {
+        val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+        val btnNext = findViewById<TextView>(R.id.tvSelect)
         btnNext?.setOnClickListener {
             if (code != "") {
                 FOFlowManager.selectLanguage.invoke(code)
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                 finish()
             }
+        }
+        this.onBackPressedDispatcher.addCallback(this, true) {
         }
     }
 

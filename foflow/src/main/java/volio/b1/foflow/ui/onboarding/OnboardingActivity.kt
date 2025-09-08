@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -87,6 +88,8 @@ class OnboardingActivity : AppCompatActivity() {
 
             }
         })
+        this.onBackPressedDispatcher.addCallback(this, true) {
+        }
     }
 
     override fun onResume() {
