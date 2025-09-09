@@ -37,7 +37,7 @@ object FOFlowManager {
         add(FlowModel("welcome", isShowAdsDefault = false))
     }
 
-    fun initDataConfig(jsonConfig: String, ) {
+    fun initDataConfig(jsonConfig: String) {
         val listType = object : TypeToken<List<FlowModel>>() {}.type
         val configList: List<FlowModel> = Gson().fromJson(jsonConfig, listType)
         flowData.clear()
