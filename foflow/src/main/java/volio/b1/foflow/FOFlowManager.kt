@@ -27,10 +27,6 @@ object FOFlowManager {
     var pushTracking: (
         isResume: Boolean, screenName: String
     ) -> Unit = { _, _ -> }
-
-    val codeLanguage: String
-        get() = LanguageConfig.codeLanguage
-
     var selectLanguage: (
         code: String
     ) -> Unit = { _ -> }
@@ -39,6 +35,20 @@ object FOFlowManager {
         add(FlowModel("language", isShowAdsDefault = true))
         add(FlowModel("onboarding", isShowAdsDefault = false))
         add(FlowModel("welcome", isShowAdsDefault = false))
+    }
+
+    fun initCallBack(
+        showNativeAds: (
+            spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
+        ) -> Unit, pushTracking: (
+            isResume: Boolean, screenName: String
+        ) -> Unit, selectLanguage: (
+            code: String
+        ) -> Unit
+    ) {
+        this.showNativeAds = showNativeAds
+        this.pushTracking = pushTracking
+        this.selectLanguage = selectLanguage
     }
 
     fun initDataConfig(jsonConfig: String) {
@@ -109,20 +119,11 @@ object FOFlowManager {
     fun startFOFlow(
         context: Context,
         intentWhenFinish: Intent?,
-        finishFOFlow: () -> Unit, showNativeAds: (
-            spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
-        ) -> Unit, pushTracking: (
-            isResume: Boolean, screenName: String
-        ) -> Unit, selectLanguage: (
-            code: String
-        ) -> Unit
+        finishFOFlow: () -> Unit,
     ) {
         goNextScreen(context, "", false)
         this.intentWhenFinish = intentWhenFinish
         this.finishFOFlow = finishFOFlow
-        this.showNativeAds = showNativeAds
-        this.pushTracking = pushTracking
-        this.selectLanguage = selectLanguage
     }
 
     fun goNextScreen(context: Context, idScreen: String, isShowOnlyScreen: Boolean) {
@@ -168,9 +169,7 @@ object FOFlowManager {
         context: Context,
         idScreen: String,
         intentWhenFinish: Intent?,
-        finishFOFlow: () -> Unit
     ) {
-        this.finishFOFlow = finishFOFlow
         this.intentWhenFinish = intentWhenFinish
         when (idScreen) {
             LanguageActivity.idScreen -> {
