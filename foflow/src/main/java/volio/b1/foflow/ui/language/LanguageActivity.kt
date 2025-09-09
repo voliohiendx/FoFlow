@@ -1,7 +1,9 @@
 package volio.b1.foflow.ui.language
 
 import android.os.Bundle
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import c.b1.fo.FOFlowManager
+import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.LanguageAdapter
 import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.R
@@ -28,7 +30,6 @@ class LanguageActivity : AppCompatActivity() {
 
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
         val recyclerView = findViewById<RecyclerView>(R.id.rvLanguage)
-        val btnNext = findViewById<TextView>(R.id.tvSelect)
 
         FOFlowManager.showNativeAds.invoke(
             LanguageConfig.nameSpaceAds,
@@ -59,14 +60,29 @@ class LanguageActivity : AppCompatActivity() {
     fun initListener() {
         val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
         val btnNext = findViewById<TextView>(R.id.tvSelect)
+        val imgBack = findViewById<ImageView>(R.id.imgBack)
+
+        if (isShowOnlyScreen) {
+            imgBack?.visibility = View.VISIBLE
+        } else {
+            imgBack?.visibility = View.GONE
+        }
+
         btnNext?.setOnClickListener {
             if (code != "") {
-                FOFlowManager.selectLanguage.invoke(code)
+                LanguageConfig.codeLanguage = code
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                 finish()
             }
         }
+
+        imgBack?.setOnClickListener {
+            finish()
+        }
         this.onBackPressedDispatcher.addCallback(this, true) {
+            if (isShowOnlyScreen) {
+                finish()
+            }
         }
     }
 

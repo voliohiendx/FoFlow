@@ -10,6 +10,11 @@
         android:background="#FFFFFF"
         android:fitsSystemWindows="false">
 
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp" />
+
         <TextView
             android:id="@+id/tvLanguage"
             android:layout_width="0dp"

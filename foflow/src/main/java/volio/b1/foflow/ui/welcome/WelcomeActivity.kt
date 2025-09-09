@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import c.b1.fo.FOFlowManager
+import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.R
 import volio.b1.foflow.config.WelcomeConfig
 

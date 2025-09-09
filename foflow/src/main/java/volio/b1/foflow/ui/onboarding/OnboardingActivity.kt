@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
-import c.b1.fo.FOFlowManager
+import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.OnboardingAdapter
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import volio.b1.foflow.R

@@ -1,4 +1,4 @@
-package c.b1.fo
+package volio.b1.foflow
 
 import android.content.Context
 import android.content.Intent
@@ -28,9 +28,8 @@ object FOFlowManager {
         isResume: Boolean, screenName: String
     ) -> Unit = { _, _ -> }
 
-    var selectLanguage: (
-        code: String
-    ) -> Unit = { _ -> }
+    val codeLanguage: String
+        get() = LanguageConfig.codeLanguage
 
     private val flowData = mutableListOf<FlowModel>().apply {
         add(FlowModel("language", isShowAdsDefault = true))
@@ -38,7 +37,8 @@ object FOFlowManager {
         add(FlowModel("welcome", isShowAdsDefault = false))
     }
 
-    fun initDataConfig(jsonConfig: String) {
+    fun initDataConfig(jsonConfig: String, codeLanguage: String) {
+        LanguageConfig.codeLanguage = codeLanguage
         val listType = object : TypeToken<List<FlowModel>>() {}.type
         val configList: List<FlowModel> = Gson().fromJson(jsonConfig, listType)
         flowData.clear()
@@ -52,7 +52,6 @@ object FOFlowManager {
         @LayoutRes adsLayoutResDefault: Int,
         nameSpaceAds: String,
         nameTracking: String,
-        codeLanguage: String,
         items: List<LanguageItemModel>
     ) {
         LanguageConfig.initData(
@@ -110,8 +109,6 @@ object FOFlowManager {
             spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
         ) -> Unit, pushTracking: (
             isResume: Boolean, screenName: String
-        ) -> Unit, selectLanguage: (
-            code: String
         ) -> Unit
     ) {
         goNextScreen(context, "", false)
@@ -119,7 +116,6 @@ object FOFlowManager {
         this.finishFOFlow = finishFOFlow
         this.showNativeAds = showNativeAds
         this.pushTracking = pushTracking
-        this.selectLanguage = selectLanguage
     }
 
     fun goNextScreen(context: Context, idScreen: String, isShowOnlyScreen: Boolean) {
@@ -164,8 +160,10 @@ object FOFlowManager {
     fun showOnlyScreen(
         context: Context,
         idScreen: String,
-        intentWhenFinish: Intent?
+        intentWhenFinish: Intent?,
+        finishFOFlow: () -> Unit
     ) {
+        this.finishFOFlow = finishFOFlow
         this.intentWhenFinish = intentWhenFinish
         when (idScreen) {
             LanguageActivity.idScreen -> {
