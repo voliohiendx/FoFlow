@@ -71,6 +71,7 @@ class LanguageActivity : AppCompatActivity() {
         btnNext?.setOnClickListener {
             if (code != "") {
                 LanguageConfig.codeLanguage = code
+                FOFlowManager.selectLanguage.invoke(code)
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                 finish()
             }

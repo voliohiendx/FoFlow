@@ -31,6 +31,10 @@ object FOFlowManager {
     val codeLanguage: String
         get() = LanguageConfig.codeLanguage
 
+    var selectLanguage: (
+        code: String
+    ) -> Unit = { _ -> }
+
     private val flowData = mutableListOf<FlowModel>().apply {
         add(FlowModel("language", isShowAdsDefault = true))
         add(FlowModel("onboarding", isShowAdsDefault = false))
@@ -109,6 +113,8 @@ object FOFlowManager {
             spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
         ) -> Unit, pushTracking: (
             isResume: Boolean, screenName: String
+        ) -> Unit, selectLanguage: (
+            code: String
         ) -> Unit
     ) {
         goNextScreen(context, "", false)
@@ -116,6 +122,7 @@ object FOFlowManager {
         this.finishFOFlow = finishFOFlow
         this.showNativeAds = showNativeAds
         this.pushTracking = pushTracking
+        this.selectLanguage = selectLanguage
     }
 
     fun goNextScreen(context: Context, idScreen: String, isShowOnlyScreen: Boolean) {
