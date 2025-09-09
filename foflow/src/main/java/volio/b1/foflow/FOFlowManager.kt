@@ -37,8 +37,7 @@ object FOFlowManager {
         add(FlowModel("welcome", isShowAdsDefault = false))
     }
 
-    fun initDataConfig(jsonConfig: String, codeLanguage: String) {
-        LanguageConfig.codeLanguage = codeLanguage
+    fun initDataConfig(jsonConfig: String, ) {
         val listType = object : TypeToken<List<FlowModel>>() {}.type
         val configList: List<FlowModel> = Gson().fromJson(jsonConfig, listType)
         flowData.clear()
@@ -52,6 +51,7 @@ object FOFlowManager {
         @LayoutRes adsLayoutResDefault: Int,
         nameSpaceAds: String,
         nameTracking: String,
+        codeLanguage: String,
         items: List<LanguageItemModel>
     ) {
         LanguageConfig.initData(
