@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             nameSpaceAds = "ADMOB_Native_Language",
             nameTracking = "language_tracking",
             codeLanguage = "en",
-            items = listOf(
+            items = mutableListOf(
                 LanguageItemModel(
                     code = "vi",
                     resFlagLanguage = R.drawable.flag_england_demo,

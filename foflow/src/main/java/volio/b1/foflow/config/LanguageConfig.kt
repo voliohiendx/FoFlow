@@ -30,7 +30,7 @@ object LanguageConfig {
         nameSpaceAds: String,
         nameTracking: String,
         codeLanguage: String,
-        items: List<LanguageItemModel>
+        items: MutableList<LanguageItemModel>
     ) {
         this.activityLayoutRes = activityLayoutRes
         this.itemLayoutRes = itemLayoutRes
