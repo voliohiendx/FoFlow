@@ -41,16 +41,17 @@ class LanguageActivity : AppCompatActivity() {
 
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(this@LanguageActivity)
+            val newList = LanguageConfig.items.toMutableList()
             val itemLanguage = LanguageConfig.items.find { it.code == code }?.let {
-                LanguageConfig.items.remove(it)
-                LanguageConfig.items.add(0, it)
+                newList.remove(it)
+                newList.add(0, it)
                 0
             } ?: run {
                 RecyclerView.NO_POSITION
             }
             adapter = LanguageAdapter(
                 selected = itemLanguage,
-                items = LanguageConfig.items,
+                items = newList,
                 itemLayoutRes = LanguageConfig.itemLayoutRes,
                 onClick = { lang ->
                     code = lang.code

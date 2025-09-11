@@ -16,7 +16,7 @@ object LanguageConfig {
     var nameTracking: String = ""
 
     var codeLanguage = "en"
-    var items: MutableList<LanguageItemModel> = mutableListOf()
+    var items: List<LanguageItemModel> = listOf()
 
     fun initData(
         @LayoutRes activityLayoutRes: Int,
@@ -26,7 +26,7 @@ object LanguageConfig {
         nameSpaceAds: String,
         nameTracking: String,
         codeLanguage: String,
-        items: MutableList<LanguageItemModel>
+        items: List<LanguageItemModel>
     ) {
         this.activityLayoutRes = activityLayoutRes
         this.itemLayoutRes = itemLayoutRes

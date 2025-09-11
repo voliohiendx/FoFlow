@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import c.b1.fo.FOFlowManager
 import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.model.OnboardingItemModel
 
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             nameSpaceAds = "ADMOB_Native_Language",
             nameTracking = "language_tracking",
             codeLanguage = "en",
-            items = mutableListOf(
+            items = listOf(
                 LanguageItemModel(
                     code = "vi",
                     resFlagLanguage = R.drawable.flag_england_demo,
@@ -91,28 +90,6 @@ class MainActivity : AppCompatActivity() {
             intentWhenFinish = Intent(this, MainActivity::class.java),
             finishFOFlow = {
 
-            },
-            showNativeAds = { spaceName, viewGroup, adsLayoutRes ->
-//                AdsUtils.showAdsNative(
-//                    spaceName = spaceName,
-//                    viewGroup = viewGroup,
-//                    idLayoutAds = adsLayoutRes,
-//                    screenName(),
-//                )
-            },
-            pushTracking = { isResume, screenName ->
-//                if (isResume) {
-//                    Tracking.onScreenResume(screenName)
-//                } else {
-//                    Tracking.onScreenPause(screenName)
-//                }
-            },
-            selectLanguage = {
-//                kotlin.runCatching {
-//                    MultiLanguages.setAppLanguage(context, Locale(it))
-//                }.onFailure {
-//                    it.printStackTrace()
-//                }
             })
 
 //        FOFlowManager.showOnlyScreen(

@@ -66,7 +66,7 @@ object FOFlowManager {
         nameSpaceAds: String,
         nameTracking: String,
         codeLanguage: String,
-        items: MutableList<LanguageItemModel>
+        items: List<LanguageItemModel>
     ) {
         LanguageConfig.initData(
             activityLayoutRes = activityLayoutRes,
