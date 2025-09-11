@@ -13,24 +13,7 @@ object OnboardingConfig {
 
     var nameSpaceAds: String = ""
     var nameTracking: String = ""
-    var items: List<OnboardingItemModel> = listOf(
-        OnboardingItemModel(
-            title = "img_onboarding_1",
-            content = "",
-            pathImage = "file:///android_asset/onboarding/img_onboarding_1.jpg",
-            isShowAds = true,
-        ), OnboardingItemModel(
-            title = "img_onboarding_2",
-            content = "",
-            pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
-            isShowAds = true,
-        ), OnboardingItemModel(
-            title = "img_onboarding_3",
-            content = "",
-            pathImage = "file:///android_asset/onboarding/img_onboarding_3.jpg",
-            isShowAds = true,
-        )
-    )
+    var items: List<OnboardingItemModel> = listOf()
 
     fun initData(
         @LayoutRes activityLayoutRes: Int,

@@ -16,11 +16,7 @@ object LanguageConfig {
     var nameTracking: String = ""
 
     var codeLanguage = "en"
-    var items: MutableList<LanguageItemModel> = mutableListOf(
-        LanguageItemModel("vi", R.drawable.flag_england_demo, "vi_VN"),
-        LanguageItemModel("en", R.drawable.flag_england_demo, "vi_VN"),
-        LanguageItemModel("de", R.drawable.flag_england_demo, "vi_VN"),
-    )
+    var items: MutableList<LanguageItemModel> = mutableListOf()
 
     fun initData(
         @LayoutRes activityLayoutRes: Int,
