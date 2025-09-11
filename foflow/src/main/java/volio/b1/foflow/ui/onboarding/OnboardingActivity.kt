@@ -31,6 +31,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val layoutId = OnboardingConfig.activityLayoutRes
         setContentView(layoutId)
         hideNavigationBar()

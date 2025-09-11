@@ -23,6 +23,7 @@ class LanguageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val layoutId = LanguageConfig.activityLayoutRes
         setContentView(layoutId)
         hideNavigationBar()
