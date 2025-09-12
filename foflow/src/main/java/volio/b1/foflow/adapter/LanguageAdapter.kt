@@ -44,7 +44,7 @@ class LanguageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val layoutId = R.layout.item_onboarding
+        val layoutId = R.layout.item_language
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
         return VH(view)
     }
