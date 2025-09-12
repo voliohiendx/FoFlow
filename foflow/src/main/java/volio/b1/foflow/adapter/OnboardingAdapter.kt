@@ -12,7 +12,6 @@ import volio.b1.foflow.model.OnboardingItemModel
 
 class OnboardingAdapter(
     private val items: List<OnboardingItemModel>,
-    private val itemLayoutRes: Int?
 ) : RecyclerView.Adapter<OnboardingAdapter.VH>() {
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +30,7 @@ class OnboardingAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val layoutId = itemLayoutRes ?: R.layout.item_onboarding_default
+        val layoutId = R.layout.item_onboarding
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
         return VH(view)
     }

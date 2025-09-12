@@ -24,10 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     fun demo() {
         FOFlowManager.initLanguageData(
-            activityLayoutRes = R.layout.activity_language_default,
-            itemLayoutRes = R.layout.item_language_default,
             adsLayoutRes = R.layout.native_ads_default,
-            adsLayoutResDefault = R.layout.native_ads_default,
             nameSpaceAds = "ADMOB_Native_Language",
             nameTracking = "language_tracking",
             codeLanguage = "en",
@@ -51,10 +48,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         FOFlowManager.initOnboardingData(
-            activityLayoutRes = R.layout.activity_onboarding_default,
-            itemLayoutRes = R.layout.item_onboarding_default,
             adsLayoutRes = R.layout.native_ads_default,
-            adsLayoutResDefault = R.layout.native_ads_default,
             nameSpaceAds = "ADMOB_Native_Language",
             nameTracking = "onboarding_tracking",
             items = listOf(
@@ -78,9 +72,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         FOFlowManager.initWelcomeData(
-            activityLayoutRes = R.layout.activity_welcome_default,
             adsLayoutRes = R.layout.native_ads_default,
-            adsLayoutResDefault = R.layout.native_ads_default,
             nameSpaceAds = "ADMOB_Native_Language",
             nameTracking = "onboarding_tracking",
         )

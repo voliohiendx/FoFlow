@@ -59,21 +59,15 @@ object FOFlowManager {
     }
 
     fun initLanguageData(
-        @LayoutRes activityLayoutRes: Int,
-        @LayoutRes itemLayoutRes: Int,
         @LayoutRes adsLayoutRes: Int,
-        @LayoutRes adsLayoutResDefault: Int,
         nameSpaceAds: String,
         nameTracking: String,
         codeLanguage: String,
         items: List<LanguageItemModel>
     ) {
         LanguageConfig.initData(
-            activityLayoutRes = activityLayoutRes,
-            itemLayoutRes = itemLayoutRes,
             adsLayoutRes = adsLayoutRes,
             nameSpaceAds = nameSpaceAds,
-            adsLayoutResDefault = adsLayoutResDefault,
             nameTracking = nameTracking,
             codeLanguage = codeLanguage,
             items = items
@@ -81,36 +75,26 @@ object FOFlowManager {
     }
 
     fun initOnboardingData(
-        @LayoutRes activityLayoutRes: Int,
-        @LayoutRes itemLayoutRes: Int,
         @LayoutRes adsLayoutRes: Int,
-        @LayoutRes adsLayoutResDefault: Int,
         nameSpaceAds: String,
         nameTracking: String,
         items: List<OnboardingItemModel>
     ) {
         OnboardingConfig.initData(
-            activityLayoutRes = activityLayoutRes,
-            itemLayoutRes = itemLayoutRes,
             adsLayoutRes = adsLayoutRes,
             nameSpaceAds = nameSpaceAds,
-            adsLayoutResDefault = adsLayoutResDefault,
             nameTracking = nameTracking,
             items = items
         )
     }
 
     fun initWelcomeData(
-        @LayoutRes activityLayoutRes: Int,
         @LayoutRes adsLayoutRes: Int,
-        @LayoutRes adsLayoutResDefault: Int,
         nameSpaceAds: String,
         nameTracking: String,
     ) {
         WelcomeConfig.initData(
-            activityLayoutRes = activityLayoutRes,
             adsLayoutRes = adsLayoutRes,
-            adsLayoutResDefault = adsLayoutResDefault,
             nameSpaceAds = nameSpaceAds,
             nameTracking = nameTracking
         )

@@ -24,23 +24,21 @@ class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
         OnboardingAdapter(
-            items = OnboardingConfig.items,
-            itemLayoutRes = OnboardingConfig.itemLayoutRes,
+            items = OnboardingConfig.items
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        val layoutId = OnboardingConfig.activityLayoutRes
-        setContentView(layoutId)
+        setContentView(R.layout.activity_onboarding)
         hideNavigationBar()
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
 
         FOFlowManager.showNativeAds.invoke(
             OnboardingConfig.nameSpaceAds,
             adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) OnboardingConfig.adsLayoutResDefault else OnboardingConfig.adsLayoutRes
+            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else OnboardingConfig.adsLayoutRes
         )
         setupViewPage()
         initListener()

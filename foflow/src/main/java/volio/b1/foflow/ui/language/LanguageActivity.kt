@@ -24,8 +24,7 @@ class LanguageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        val layoutId = LanguageConfig.activityLayoutRes
-        setContentView(layoutId)
+        setContentView(R.layout.activity_language)
         hideNavigationBar()
 
 
@@ -35,7 +34,7 @@ class LanguageActivity : AppCompatActivity() {
         FOFlowManager.showNativeAds.invoke(
             LanguageConfig.nameSpaceAds,
             adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) LanguageConfig.adsLayoutResDefault else LanguageConfig.adsLayoutRes
+            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else LanguageConfig.adsLayoutRes
         )
         code = LanguageConfig.codeLanguage
 
@@ -52,7 +51,6 @@ class LanguageActivity : AppCompatActivity() {
             adapter = LanguageAdapter(
                 selected = itemLanguage,
                 items = newList,
-                itemLayoutRes = LanguageConfig.itemLayoutRes,
                 onClick = { lang ->
                     code = lang.code
                 })

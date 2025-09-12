@@ -18,15 +18,14 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        val layoutId = WelcomeConfig.activityLayoutRes
-        setContentView(layoutId)
+        setContentView(R.layout.activity_welcome)
         hideNavigationBar()
 
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
         FOFlowManager.showNativeAds.invoke(
             WelcomeConfig.nameSpaceAds,
             adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) WelcomeConfig.adsLayoutResDefault else WelcomeConfig.adsLayoutRes
+            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else WelcomeConfig.adsLayoutRes
         )
         initListener()
 

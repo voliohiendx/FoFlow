@@ -12,7 +12,6 @@ import volio.b1.foflow.model.LanguageItemModel
 class LanguageAdapter(
     selected: Int,
     private val items: List<LanguageItemModel>,
-    private val itemLayoutRes: Int?,
     private val onClick: (LanguageItemModel) -> Unit
 ) : RecyclerView.Adapter<LanguageAdapter.VH>() {
 
@@ -45,7 +44,7 @@ class LanguageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val layoutId = itemLayoutRes ?: R.layout.item_onboarding_default
+        val layoutId = R.layout.item_onboarding
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
         return VH(view)
     }
