@@ -10,7 +10,7 @@ import volio.b1.foflow.R
 import volio.b1.foflow.model.LanguageItemModel
 
 class LanguageAdapter(
-    selected: Int,
+    val selected: Int,
     private val items: List<LanguageItemModel>,
     private val onClick: (LanguageItemModel) -> Unit
 ) : RecyclerView.Adapter<LanguageAdapter.VH>() {
@@ -26,13 +26,13 @@ class LanguageAdapter(
         private val viewSelect: View = itemView.findViewById(R.id.viewSelect)
         private val tvDefault: TextView? = itemView.findViewById(R.id.tvDefault)
 
-        fun bind(item: LanguageItemModel, isSelected: Boolean) {
+        fun bind(item: LanguageItemModel, isSelected: Boolean, isDefault: Boolean) {
             tvLanguage.text = item.nameLanguage
             imvSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
             imvUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
             viewSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
             viewUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
-            tvDefault?.visibility = if (isSelected) View.VISIBLE else View.GONE
+            tvDefault?.visibility = if (isDefault) View.VISIBLE else View.GONE
             imvFlagLanguage.setImageResource(item.resFlagLanguage)
 
             itemView.setOnClickListener {
@@ -52,7 +52,7 @@ class LanguageAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) =
-        holder.bind(items[position], position == selectedPosition)
+        holder.bind(items[position], position == selectedPosition, selected == position)
 
     override fun getItemCount() = items.size
 }
