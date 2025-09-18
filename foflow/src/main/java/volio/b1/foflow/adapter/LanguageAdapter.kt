@@ -24,6 +24,7 @@ class LanguageAdapter(
         private val imvUnSelect: ImageView = itemView.findViewById(R.id.imvUnSelect)
         private val viewUnSelect: View = itemView.findViewById(R.id.viewUnSelect)
         private val viewSelect: View = itemView.findViewById(R.id.viewSelect)
+        private val tvDefault: TextView? = itemView.findViewById(R.id.tvDefault)
 
         fun bind(item: LanguageItemModel, isSelected: Boolean) {
             tvLanguage.text = item.nameLanguage
@@ -31,6 +32,7 @@ class LanguageAdapter(
             imvUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
             viewSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
             viewUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
+            tvDefault?.visibility = if (isSelected) View.VISIBLE else View.GONE
             imvFlagLanguage.setImageResource(item.resFlagLanguage)
 
             itemView.setOnClickListener {

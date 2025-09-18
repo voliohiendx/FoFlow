@@ -56,6 +56,13 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:src="@drawable/ic_language_select" />
 
+            <TextView
+                android:id="@+id/tvDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Default"
+                android:layout_marginEnd="@dimen/_12sdp" />
+
             <ImageView
                 android:id="@+id/imvUnSelect"
                 android:layout_width="@dimen/_24sdp"
