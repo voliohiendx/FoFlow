@@ -58,7 +58,10 @@ class OnboardingActivity : AppCompatActivity() {
     fun initListener() {
         val vpTemplate = findViewById<ViewPager2>(R.id.vpTemplate)
         val tvNext = findViewById<TextView>(R.id.tvNext)
+        val tvGetStarted: TextView? = findViewById<TextView>(R.id.tvGetStarted)
         val layoutAds = findViewById<FrameLayout>(R.id.layoutAds)
+        tvGetStarted?.visibility= View.INVISIBLE
+
         tvNext.setPreventDoubleClick {
             if (vpTemplate.currentItem == adapter.itemCount - 1) {
                 val isShowOnlyScreen =
@@ -69,6 +72,15 @@ class OnboardingActivity : AppCompatActivity() {
             } else {
                 vpTemplate.currentItem += 1
             }
+        }
+
+        tvGetStarted?.setPreventDoubleClick {
+            val isShowOnlyScreen =
+                intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+
+            FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+            finish()
+
         }
 
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -82,6 +94,17 @@ class OnboardingActivity : AppCompatActivity() {
                 } else {
                     if (layoutAds.isInvisible) {
                         layoutAds.visibility = View.VISIBLE
+                    }
+                }
+                if (position == adapter.itemCount - 1) {
+                    if (tvGetStarted != null) {
+                        tvGetStarted.visibility = View.VISIBLE
+                        tvNext.visibility = View.INVISIBLE
+                    }
+                } else {
+                    if (tvGetStarted != null) {
+                        tvGetStarted.visibility = View.INVISIBLE
+                        tvNext.visibility = View.VISIBLE
                     }
                 }
 
