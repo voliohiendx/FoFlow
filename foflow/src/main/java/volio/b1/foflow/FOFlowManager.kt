@@ -9,95 +9,37 @@ import volio.b1.foflow.ui.language.LanguageActivity
 import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.ui.onboarding.OnboardingActivity
-import volio.b1.foflow.config.OnboardingConfig
 import volio.b1.foflow.model.OnboardingItemModel
-import volio.b1.foflow.ui.welcome.WelcomeActivity
-import volio.b1.foflow.config.WelcomeConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import volio.b1.foflow.config.FoFlowConfig
+import volio.b1.foflow.utils.FOFlowCallback
 
 object FOFlowManager {
     private var finishFOFlow: () -> Unit = {}
     private var intentWhenFinish: Intent? = null
+    internal lateinit var config: FoFlowConfig
 
-    var showNativeAds: (
-        spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
-    ) -> Unit = { _, _, _ -> }
-
-    var pushTracking: (
-        isResume: Boolean, screenName: String
-    ) -> Unit = { _, _ -> }
-    var selectLanguage: (
-        code: String
-    ) -> Unit = { _ -> }
+    var callback: FOFlowCallback? = null
 
     private val flowData = mutableListOf<FlowModel>().apply {
         add(FlowModel("language", isShowAdsDefault = true))
         add(FlowModel("onboarding", isShowAdsDefault = false))
-        add(FlowModel("welcome", isShowAdsDefault = false))
     }
 
-    fun initCallBack(
-        showNativeAds: (
-            spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int
-        ) -> Unit, pushTracking: (
-            isResume: Boolean, screenName: String
-        ) -> Unit, selectLanguage: (
-            code: String
-        ) -> Unit
+    fun init(
+        config: FoFlowConfig,
+        callback: FOFlowCallback
     ) {
-        this.showNativeAds = showNativeAds
-        this.pushTracking = pushTracking
-        this.selectLanguage = selectLanguage
+        this.config = config
+        this.callback = callback
     }
 
-    fun initDataConfig(jsonConfig: String) {
+    fun initDataRemote(jsonConfig: String) {
         val listType = object : TypeToken<List<FlowModel>>() {}.type
         val configList: List<FlowModel> = Gson().fromJson(jsonConfig, listType)
         flowData.clear()
         flowData.addAll(configList)
-    }
-
-    fun initLanguageData(
-        @LayoutRes adsLayoutRes: Int,
-        nameSpaceAds: String,
-        nameTracking: String,
-        codeLanguage: String,
-        items: List<LanguageItemModel>
-    ) {
-        LanguageConfig.initData(
-            adsLayoutRes = adsLayoutRes,
-            nameSpaceAds = nameSpaceAds,
-            nameTracking = nameTracking,
-            codeLanguage = codeLanguage,
-            items = items
-        )
-    }
-
-    fun initOnboardingData(
-        @LayoutRes adsLayoutRes: Int,
-        nameSpaceAds: String,
-        nameTracking: String,
-        items: List<OnboardingItemModel>
-    ) {
-        OnboardingConfig.initData(
-            adsLayoutRes = adsLayoutRes,
-            nameSpaceAds = nameSpaceAds,
-            nameTracking = nameTracking,
-            items = items
-        )
-    }
-
-    fun initWelcomeData(
-        @LayoutRes adsLayoutRes: Int,
-        nameSpaceAds: String,
-        nameTracking: String,
-    ) {
-        WelcomeConfig.initData(
-            adsLayoutRes = adsLayoutRes,
-            nameSpaceAds = nameSpaceAds,
-            nameTracking = nameTracking
-        )
     }
 
     fun startFOFlow(
@@ -132,13 +74,6 @@ object FOFlowManager {
                     })
                     return
                 }
-
-                WelcomeActivity.idScreen -> {
-                    context.startActivity(Intent(context, WelcomeActivity::class.java).apply {
-                        putExtra(WelcomeActivity.isShowOnlyScreen, isShowOnlyScreen)
-                    })
-                    return
-                }
             }
         } else {
             finishFOFlow.invoke()
@@ -166,13 +101,6 @@ object FOFlowManager {
             OnboardingActivity.idScreen -> {
                 context.startActivity(Intent(context, OnboardingActivity::class.java).apply {
                     putExtra(OnboardingActivity.isShowOnlyScreen, true)
-                })
-                return
-            }
-
-            WelcomeActivity.idScreen -> {
-                context.startActivity(Intent(context, WelcomeActivity::class.java).apply {
-                    putExtra(WelcomeActivity.isShowOnlyScreen, true)
                 })
                 return
             }

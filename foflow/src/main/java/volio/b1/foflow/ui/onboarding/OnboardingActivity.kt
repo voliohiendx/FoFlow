@@ -17,14 +17,13 @@ import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.OnboardingAdapter
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import volio.b1.foflow.R
-import volio.b1.foflow.config.OnboardingConfig
 import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
         OnboardingAdapter(
-            items = OnboardingConfig.items
+            items = FOFlowManager.config.onboarding.items
         )
     }
 
@@ -35,10 +34,11 @@ class OnboardingActivity : AppCompatActivity() {
         hideNavigationBar()
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
 
-        FOFlowManager.showNativeAds.invoke(
-            OnboardingConfig.nameSpaceAds,
+        FOFlowManager.callback?.showNativeAds(
+            FOFlowManager.config.onboarding.nameSpaceAds,
             adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else OnboardingConfig.adsLayoutRes
+            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutRes,
+            FOFlowManager.config.onboarding.nameTracking
         )
         setupViewPage()
         initListener()
@@ -60,7 +60,7 @@ class OnboardingActivity : AppCompatActivity() {
         val tvNext = findViewById<TextView>(R.id.tvNext)
         val tvGetStarted: TextView? = findViewById<TextView>(R.id.tvGetStarted)
         val layoutAds = findViewById<FrameLayout>(R.id.layoutAds)
-        tvGetStarted?.visibility= View.INVISIBLE
+        tvGetStarted?.visibility = View.INVISIBLE
 
         tvNext.setPreventDoubleClick {
             if (vpTemplate.currentItem == adapter.itemCount - 1) {
@@ -86,7 +86,7 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val isShowAds = OnboardingConfig.items[position].isShowAds
+                val isShowAds = FOFlowManager.config.onboarding.items[position].isShowAds
                 if (!isShowAds) {
                     if (layoutAds.isVisible) {
                         layoutAds.visibility = View.INVISIBLE
@@ -116,17 +116,17 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (OnboardingConfig.nameTracking.isNotBlank()) FOFlowManager.pushTracking.invoke(
+        if (FOFlowManager.config.onboarding.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
             true,
-            OnboardingConfig.nameTracking
+            FOFlowManager.config.onboarding.nameTracking
         )
     }
 
     override fun onPause() {
         super.onPause()
-        if (OnboardingConfig.nameTracking.isNotBlank()) FOFlowManager.pushTracking.invoke(
+        if (FOFlowManager.config.onboarding.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
             false,
-            OnboardingConfig.nameTracking
+            FOFlowManager.config.onboarding.nameTracking
         )
     }
 

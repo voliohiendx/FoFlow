@@ -2,12 +2,17 @@ package volio.b1.foflow
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import volio.b1.foflow.config.FoFlowConfig
+import volio.b1.foflow.config.LanguageConfig
+import volio.b1.foflow.config.OnboardingConfig
 import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.model.OnboardingItemModel
+import volio.b1.foflow.utils.FOFlowCallback
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,58 +28,74 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun demo() {
-        FOFlowManager.initLanguageData(
-            adsLayoutRes = R.layout.native_ads_default,
-            nameSpaceAds = "ADMOB_Native_Language",
-            nameTracking = "language_tracking",
-            codeLanguage = "en",
-            items = listOf(
-                LanguageItemModel(
-                    code = "vi",
-                    resFlagLanguage = R.drawable.flag_england_demo,
-                    nameLanguage = "Vietnamese"
+        FOFlowManager.init(
+            config = FoFlowConfig(
+                language = LanguageConfig(
+                    adsLayoutRes = R.layout.native_ads_default,
+                    nameSpaceAds = "ADMOB_Native_Language",
+                    nameTracking = "language_tracking",
+                    codeLanguage = "en",
+                    items = listOf(
+                        LanguageItemModel(
+                            code = "vi",
+                            resFlagLanguage = R.drawable.flag_england_demo,
+                            nameLanguage = "Vietnamese"
+                        ),
+                        LanguageItemModel(
+                            code = "de",
+                            resFlagLanguage = R.drawable.flag_england_demo,
+                            nameLanguage = "Brazilian"
+                        ),
+                        LanguageItemModel(
+                            code = "en",
+                            resFlagLanguage = R.drawable.flag_england_demo,
+                            nameLanguage = "Englis"
+                        ),
+                    )
                 ),
-                LanguageItemModel(
-                    code = "de",
-                    resFlagLanguage = R.drawable.flag_england_demo,
-                    nameLanguage = "Brazilian"
-                ),
-                LanguageItemModel(
-                    code = "en",
-                    resFlagLanguage = R.drawable.flag_england_demo,
-                    nameLanguage = "Englis"
-                ),
-            )
-        )
-
-        FOFlowManager.initOnboardingData(
-            adsLayoutRes = R.layout.native_ads_default,
-            nameSpaceAds = "ADMOB_Native_Language",
-            nameTracking = "onboarding_tracking",
-            items = listOf(
-                OnboardingItemModel(
-                    title = "img_onboarding_1",
-                    content = "",
-                    pathImage = "file:///android_asset/onboarding/img_onboarding_1.jpg",
-                    isShowAds = true,
-                ), OnboardingItemModel(
-                    title = "img_onboarding_2",
-                    content = "",
-                    pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
-                    isShowAds = false,
-                ), OnboardingItemModel(
-                    title = "img_onboarding_3",
-                    content = "",
-                    pathImage = "file:///android_asset/onboarding/img_onboarding_3.jpg",
-                    isShowAds = true,
+                onboarding = OnboardingConfig(
+                    adsLayoutRes = R.layout.native_ads_default,
+                    nameSpaceAds = "ADMOB_Native_Language",
+                    nameTracking = "onboarding_tracking",
+                    items = listOf(
+                        OnboardingItemModel(
+                            title = "img_onboarding_1",
+                            content = "",
+                            pathImage = "file:///android_asset/onboarding/img_onboarding_1.jpg",
+                            isShowAds = true,
+                        ), OnboardingItemModel(
+                            title = "img_onboarding_2",
+                            content = "",
+                            pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
+                            isShowAds = false,
+                        ), OnboardingItemModel(
+                            title = "img_onboarding_3",
+                            content = "",
+                            pathImage = "file:///android_asset/onboarding/img_onboarding_3.jpg",
+                            isShowAds = true,
+                        )
+                    )
                 )
-            )
-        )
+            ),
+            callback = object : FOFlowCallback {
+                override fun showNativeAds(
+                    spaceName: String,
+                    viewGroup: ViewGroup,
+                    idLayoutAds: Int,
+                    screenName: String
+                ) {
 
-        FOFlowManager.initWelcomeData(
-            adsLayoutRes = R.layout.native_ads_default,
-            nameSpaceAds = "ADMOB_Native_Language",
-            nameTracking = "onboarding_tracking",
+                }
+
+                override fun pushTracking(isResume: Boolean, screenName: String) {
+
+                }
+
+                override fun selectLanguage(codeLanguage: String) {
+
+                }
+
+            }
         )
 
         FOFlowManager.startFOFlow(

@@ -31,17 +31,18 @@ class LanguageActivity : AppCompatActivity() {
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
         val recyclerView = findViewById<RecyclerView>(R.id.rvLanguage)
 
-        FOFlowManager.showNativeAds.invoke(
-            LanguageConfig.nameSpaceAds,
+        FOFlowManager.callback?.showNativeAds(
+            FOFlowManager.config.language.nameSpaceAds,
             adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else LanguageConfig.adsLayoutRes
+            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.language.adsLayoutRes,
+            FOFlowManager.config.language.nameTracking
         )
-        code = LanguageConfig.codeLanguage
+        code = FOFlowManager.config.language.codeLanguage
 
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(this@LanguageActivity)
-            val newList = LanguageConfig.items.toMutableList()
-            val itemLanguage = LanguageConfig.items.find { it.code == code }?.let {
+            val newList = FOFlowManager.config.language.items.toMutableList()
+            val itemLanguage = FOFlowManager.config.language.items.find { it.code == code }?.let {
                 newList.remove(it)
                 newList.add(0, it)
                 0
@@ -72,8 +73,10 @@ class LanguageActivity : AppCompatActivity() {
 
         btnNext?.setOnClickListener {
             if (code != "") {
-                LanguageConfig.codeLanguage = code
-                FOFlowManager.selectLanguage.invoke(code)
+                FOFlowManager.config = FOFlowManager.config.copy(
+                    language = FOFlowManager.config.language.copy(codeLanguage = code)
+                )
+                FOFlowManager.callback?.selectLanguage(code)
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                 finish()
             }
@@ -91,15 +94,15 @@ class LanguageActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (LanguageConfig.nameTracking.isNotBlank()) FOFlowManager.pushTracking.invoke(
-            true, LanguageConfig.nameTracking
+        if (FOFlowManager.config.language.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
+            true, FOFlowManager.config.language.nameTracking
         )
     }
 
     override fun onPause() {
         super.onPause()
-        if (LanguageConfig.nameTracking.isNotBlank()) FOFlowManager.pushTracking.invoke(
-            false, LanguageConfig.nameTracking
+        if (FOFlowManager.config.language.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
+            false, FOFlowManager.config.language.nameTracking
         )
     }
 
