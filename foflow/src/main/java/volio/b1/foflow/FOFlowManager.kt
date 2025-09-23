@@ -2,6 +2,7 @@ package volio.b1.foflow
 
 import android.content.Context
 import android.content.Intent
+import android.os.FileUtils
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import volio.b1.foflow.model.FlowModel
@@ -14,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import volio.b1.foflow.config.FoFlowConfig
 import volio.b1.foflow.utils.FOFlowCallback
+import java.io.InputStream
 
 object FOFlowManager {
     private var finishFOFlow: () -> Unit = {}
@@ -28,11 +30,16 @@ object FOFlowManager {
     }
 
     fun init(
+        context: Context,
+        pathAsset: String,
         config: FoFlowConfig,
         callback: FOFlowCallback
     ) {
         this.config = config
         this.callback = callback
+        getStringAssetFile(context, pathAsset)?.let {
+            initDataRemote(it)
+        }
     }
 
     fun initDataRemote(jsonConfig: String) {
@@ -109,5 +116,14 @@ object FOFlowManager {
 
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
+    }
+
+    fun getStringAssetFile(context: Context, path: String): String? {
+        return try {
+            val inputStream: InputStream = context.assets.open(path)
+            inputStream.bufferedReader().use { it.readText() }
+        } catch (ex: Exception) {
+            return null
+        }
     }
 }
