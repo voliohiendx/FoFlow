@@ -1,6 +1,7 @@
 package volio.b1.foflow.ui.onboarding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.forEachIndexed
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
@@ -18,6 +20,7 @@ import volio.b1.foflow.adapter.OnboardingAdapter
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import volio.b1.foflow.R
 import volio.b1.foflow.utils.setPreventDoubleClick
+import androidx.core.view.isNotEmpty
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -85,8 +88,12 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val adsVisibility = FOFlowManager.config.onboarding.items[position].adsVisibility
-                layoutAds.visibility = adsVisibility
+                if (layoutAds.isNotEmpty()) {
+                    layoutAds.visibility =
+                        FOFlowManager.config.onboarding.items[position].adsVisibility
+                } else {
+                    layoutAds.visibility = View.GONE
+                }
 
                 if (position == adapter.itemCount - 1) {
                     if (tvGetStarted != null) {
