@@ -4,5 +4,5 @@ data class OnboardingItemModel(
     val title: String,
     val content: String,
     val pathImage: String,
-    val isShowAds: Boolean
+    val adsVisibility: Int
 )

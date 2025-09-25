@@ -52,7 +52,6 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.adapter = adapter
 
         dotsIndicator.attachTo(vpTemplate)
-
     }
 
     fun initListener() {
@@ -86,16 +85,9 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val isShowAds = FOFlowManager.config.onboarding.items[position].isShowAds
-                if (!isShowAds) {
-                    if (layoutAds.isVisible) {
-                        layoutAds.visibility = View.INVISIBLE
-                    }
-                } else {
-                    if (layoutAds.isInvisible) {
-                        layoutAds.visibility = View.VISIBLE
-                    }
-                }
+                val adsVisibility = FOFlowManager.config.onboarding.items[position].adsVisibility
+                layoutAds.visibility = adsVisibility
+
                 if (position == adapter.itemCount - 1) {
                     if (tvGetStarted != null) {
                         tvGetStarted.visibility = View.VISIBLE

@@ -114,11 +114,27 @@ object FOFlowManager {
         }
     }
 
+    fun setLanguageLayoutAds(@LayoutRes adsLayoutRes: Int) {
+        config = config.copy(
+            language = config.language.copy(
+                adsLayoutRes = adsLayoutRes
+            )
+        )
+    }
+
+    fun setOnboardingLayoutAds(@LayoutRes adsLayoutRes: Int) {
+        config = config.copy(
+            onboarding = config.onboarding.copy(
+                adsLayoutRes = adsLayoutRes
+            )
+        )
+    }
+
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
     }
 
-    fun getStringAssetFile(context: Context, path: String): String? {
+    private fun getStringAssetFile(context: Context, path: String): String? {
         return try {
             val inputStream: InputStream = context.assets.open(path)
             inputStream.bufferedReader().use { it.readText() }
