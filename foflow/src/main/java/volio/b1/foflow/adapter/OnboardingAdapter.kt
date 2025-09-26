@@ -22,10 +22,12 @@ class OnboardingAdapter(
         fun bind(item: OnboardingItemModel) {
 
             Glide.with(itemView).load(item.pathImage).into(imgOnboarding)
-            tvTitleOnboarding.text = item.title
-            tvDescriptionOnboarding.text = item.content
-            if (item.content != "") tvDescriptionOnboarding.visibility = View.VISIBLE
-            else tvDescriptionOnboarding.visibility = View.GONE
+            tvTitleOnboarding.text = itemView.context.getString(item.title)
+
+            if (item.content != null) {
+                tvDescriptionOnboarding.text = itemView.context.getString(item.content)
+                tvDescriptionOnboarding.visibility = View.VISIBLE
+            } else tvDescriptionOnboarding.visibility = View.GONE
         }
     }
 
