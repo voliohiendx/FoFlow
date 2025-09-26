@@ -2,6 +2,7 @@ package volio.b1.foflow
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,7 @@ import volio.b1.foflow.config.OnboardingConfig
 import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
-
+import volio.b1.foflow.R
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,20 +60,20 @@ class MainActivity : AppCompatActivity() {
                     nameTracking = "onboarding_tracking",
                     items = listOf(
                         OnboardingItemModel(
-                            title = "img_onboarding_1",
-                            content = "",
+                            title = R.string.img_onboarding_1,
+                            content = null,
                             pathImage = "file:///android_asset/onboarding/img_onboarding_1.jpg",
-                            isShowAds = true,
+                            adsVisibility = View.VISIBLE,
                         ), OnboardingItemModel(
-                            title = "img_onboarding_2",
-                            content = "",
+                            title = R.string.img_onboarding_2,
+                            content = null,
                             pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
-                            isShowAds = false,
+                            adsVisibility = View.GONE,
                         ), OnboardingItemModel(
-                            title = "img_onboarding_3",
-                            content = "",
+                            title = R.string.img_onboarding_3,
+                            content = null,
                             pathImage = "file:///android_asset/onboarding/img_onboarding_3.jpg",
-                            isShowAds = true,
+                            adsVisibility = View.VISIBLE,
                         )
                     )
                 )
@@ -95,7 +96,9 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-            }
+            },
+            context = this,
+            pathAsset =""
         )
 
         FOFlowManager.startFOFlow(
