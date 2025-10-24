@@ -1,11 +1,11 @@
 package volio.b1.foflow.model
 
 data class OnboardingItemModel(
-    val title: String,
-    val content: String,
+    val title: Int,
+    val content: Int? = null,
     val pathImage: String,
     val adsVisibility: Int,
-    val type: Int = TYPE_NORMAL
+    val type: Int = TYPE_NORMAL,
 ){
     companion object {
         const val TYPE_NORMAL = 0

@@ -21,21 +21,29 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import volio.b1.foflow.R
 import volio.b1.foflow.utils.setPreventDoubleClick
 import androidx.core.view.isNotEmpty
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import volio.b1.foflow.model.OnboardingItemModel
 
 class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
         OnboardingAdapter(
             items = FOFlowManager.config.onboarding.items
-        ) {
+        ) { view ->
             FOFlowManager.callback?.showNativeAds(
-                FOFlowManager.config.onboarding.nameSpaceAds,
-                it,
-                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutRes,
+                FOFlowManager.config.onboarding.nameSpaceAdsFull,
+                view,
+                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutResFull,
                 FOFlowManager.config.onboarding.nameTracking
             )
         }
     }
+    private var autoScrollJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +108,17 @@ class OnboardingActivity : AppCompatActivity() {
                         FOFlowManager.config.onboarding.items[position].adsVisibility
                 } else {
                     layoutAds.visibility = View.GONE
+                }
+
+                autoScrollJob?.cancel()
+
+                if (FOFlowManager.config.onboarding.items[position].type == OnboardingItemModel.TYPE_ADS) {
+                    autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
+                        delay(8000)
+                        if (position < FOFlowManager.config.onboarding.items.lastIndex) {
+                            vpTemplate.setCurrentItem(position + 1, true)
+                        }
+                    }
                 }
 
                 if (position == adapter.itemCount - 1) {
