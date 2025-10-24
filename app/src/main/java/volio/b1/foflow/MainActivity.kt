@@ -15,6 +15,7 @@ import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
 import volio.b1.foflow.R
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,7 +101,10 @@ class MainActivity : AppCompatActivity() {
 
             },
             context = this,
-            pathAsset =""
+            pathAsset = "",
+            isEnableShowAds = {
+                true
+            }
         )
 
         FOFlowManager.startFOFlow(
@@ -110,10 +114,6 @@ class MainActivity : AppCompatActivity() {
 
             })
 
-//        FOFlowManager.showOnlyScreen(
-//            this,
-//            "welcome",
-//            Intent(this, MainActivity::class.java)
-//        )
     }
+
 }

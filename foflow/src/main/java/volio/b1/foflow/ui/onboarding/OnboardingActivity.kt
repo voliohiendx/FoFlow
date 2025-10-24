@@ -33,17 +33,29 @@ import volio.b1.foflow.model.OnboardingItemModel
 class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
+        val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
+            if (item.type == OnboardingItemModel.TYPE_ADS) {
+                FOFlowManager.isEnableShowAds(FOFlowManager.config.onboarding.nameSpaceAdsFull)
+            } else {
+                true
+            }
+        }
+
         OnboardingAdapter(
-            items = FOFlowManager.config.onboarding.items
+            items = filteredItems
         ) { view ->
             FOFlowManager.callback?.showNativeAds(
                 FOFlowManager.config.onboarding.nameSpaceAdsFull,
                 view,
-                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutResFull,
+                if (FOFlowManager.isShowDefaultAds(idScreen))
+                    R.layout.native_ads_default
+                else
+                    FOFlowManager.config.onboarding.adsLayoutResFull,
                 FOFlowManager.config.onboarding.nameTracking
             )
         }
     }
+
     private var autoScrollJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

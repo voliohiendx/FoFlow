@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.FileUtils
 import android.view.ViewGroup
+import android.widget.Space
 import androidx.annotation.LayoutRes
 import volio.b1.foflow.model.FlowModel
 import volio.b1.foflow.ui.language.LanguageActivity
@@ -29,14 +30,18 @@ object FOFlowManager {
         add(FlowModel("onboarding", isShowAdsDefault = false))
     }
 
+    var isEnableShowAds: (String) -> Boolean = { true }
+
     fun init(
         context: Context,
         pathAsset: String,
         config: FoFlowConfig,
-        callback: FOFlowCallback
+        callback: FOFlowCallback,
+        isEnableShowAds: (String) -> Boolean
     ) {
         this.config = config
         this.callback = callback
+        this.isEnableShowAds = isEnableShowAds
         getStringAssetFile(context, pathAsset)?.let {
             initDataRemote(it)
         }
@@ -53,7 +58,8 @@ object FOFlowManager {
         context: Context,
         intentWhenFinish: Intent?,
         finishFOFlow: () -> Unit,
-    ) {
+
+        ) {
         goNextScreen(context, "", false)
         this.intentWhenFinish = intentWhenFinish
         this.finishFOFlow = finishFOFlow
@@ -132,6 +138,10 @@ object FOFlowManager {
 
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
+    }
+
+    fun isEnableShowAds(space: String): Boolean {
+        return (isEnableShowAds.invoke(space))
     }
 
     private fun getStringAssetFile(context: Context, path: String): String? {
