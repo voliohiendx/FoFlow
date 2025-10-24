@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import volio.b1.foflow.model.OnboardingItemModel
 
 class OnboardingActivity : AppCompatActivity() {
@@ -115,24 +116,29 @@ class OnboardingActivity : AppCompatActivity() {
                 if (FOFlowManager.config.onboarding.items[position].type == OnboardingItemModel.TYPE_ADS) {
                     autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
                         delay(8000)
-                        if (position < FOFlowManager.config.onboarding.items.lastIndex) {
-                            vpTemplate.setCurrentItem(position + 1, true)
+                        if (position < adapter.itemCount - 1) {
+                            withContext(Dispatchers.Main) {
+                                vpTemplate.setCurrentItem(position + 1, true)
+                            }
                         }
                     }
-                }
-
-                if (position == adapter.itemCount - 1) {
                     if (tvGetStarted != null) {
-                        tvGetStarted.visibility = View.VISIBLE
+                        tvGetStarted.visibility = View.INVISIBLE
                         tvNext.visibility = View.INVISIBLE
                     }
                 } else {
-                    if (tvGetStarted != null) {
-                        tvGetStarted.visibility = View.INVISIBLE
-                        tvNext.visibility = View.VISIBLE
+                    if (position == adapter.itemCount - 1) {
+                        if (tvGetStarted != null) {
+                            tvGetStarted.visibility = View.VISIBLE
+                            tvNext.visibility = View.INVISIBLE
+                        }
+                    } else {
+                        if (tvGetStarted != null) {
+                            tvGetStarted.visibility = View.INVISIBLE
+                            tvNext.visibility = View.VISIBLE
+                        }
                     }
                 }
-
             }
         })
         this.onBackPressedDispatcher.addCallback(this, true) {
