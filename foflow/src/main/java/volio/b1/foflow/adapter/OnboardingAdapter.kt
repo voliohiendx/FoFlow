@@ -65,5 +65,9 @@ class OnboardingAdapter(
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return items[position].type
+    }
+
     override fun getItemCount() = items.size
 }
