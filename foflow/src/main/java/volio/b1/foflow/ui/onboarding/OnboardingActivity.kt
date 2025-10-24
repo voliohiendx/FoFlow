@@ -27,7 +27,14 @@ class OnboardingActivity : AppCompatActivity() {
     val adapter by lazy {
         OnboardingAdapter(
             items = FOFlowManager.config.onboarding.items
-        )
+        ) {
+            FOFlowManager.callback?.showNativeAds(
+                FOFlowManager.config.onboarding.nameSpaceAds,
+                it,
+                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutRes,
+                FOFlowManager.config.onboarding.nameTracking
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
