@@ -40,14 +40,15 @@ class OnboardingActivity : AppCompatActivity() {
                 true
             }
         }
+
+        FOFlowManager.setDataOnboardingItem(filteredItems)
         OnboardingAdapter(
             items = filteredItems
         ) { view ->
             FOFlowManager.callback?.showNativeAds(
                 FOFlowManager.config.onboarding.nameSpaceAdsFull,
                 view,
-                if (FOFlowManager.isShowDefaultAds(idScreen))
-                    R.layout.native_ads_default
+                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default
                 else FOFlowManager.config.onboarding.adsLayoutResFull,
                 FOFlowManager.config.onboarding.nameTracking
             )
@@ -92,15 +93,14 @@ class OnboardingActivity : AppCompatActivity() {
 
         tvNext.setPreventDoubleClick {
             if (vpTemplate.currentItem == adapter.itemCount - 1) {
-                val isShowOnlyScreen =
-                    intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+                val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
                 if (FOFlowManager.config.onboarding.showAdsInter) {
                     FOFlowManager.callback?.showInterAds {
                         FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                         finish()
                     }
-                }else{
+                } else {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                     finish()
                 }
@@ -111,15 +111,14 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         tvGetStarted?.setPreventDoubleClick {
-            val isShowOnlyScreen =
-                intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+            val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
             if (FOFlowManager.config.onboarding.showAdsInter) {
                 FOFlowManager.callback?.showInterAds {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                     finish()
                 }
-            }else{
+            } else {
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                 finish()
             }
@@ -169,23 +168,20 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             }
         })
-        this.onBackPressedDispatcher.addCallback(this, true) {
-        }
+        this.onBackPressedDispatcher.addCallback(this, true) {}
     }
 
     override fun onResume() {
         super.onResume()
         if (FOFlowManager.config.onboarding.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
-            true,
-            FOFlowManager.config.onboarding.nameTracking
+            true, FOFlowManager.config.onboarding.nameTracking
         )
     }
 
     override fun onPause() {
         super.onPause()
         if (FOFlowManager.config.onboarding.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
-            false,
-            FOFlowManager.config.onboarding.nameTracking
+            false, FOFlowManager.config.onboarding.nameTracking
         )
     }
 
