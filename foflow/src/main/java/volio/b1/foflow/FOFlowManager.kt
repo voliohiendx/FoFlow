@@ -9,6 +9,7 @@ import volio.b1.foflow.ui.onboarding.OnboardingActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import volio.b1.foflow.config.FoFlowConfig
+import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
 import java.io.InputStream
 
@@ -24,18 +25,15 @@ object FOFlowManager {
         add(FlowModel("onboarding", isShowAdsDefault = false))
     }
 
-    var isEnableShowAdsBySpaceName: (String) -> Boolean = { true }
 
     fun init(
         context: Context,
         pathAsset: String,
         config: FoFlowConfig,
         callback: FOFlowCallback,
-        isEnableShowAdsBySpaceName: (String) -> Boolean
     ) {
         this.config = config
         this.callback = callback
-        this.isEnableShowAdsBySpaceName = isEnableShowAdsBySpaceName
         getStringAssetFile(context, pathAsset)?.let {
             initDataRemote(it)
         }
@@ -51,9 +49,8 @@ object FOFlowManager {
     fun startFOFlow(
         context: Context,
         intentWhenFinish: Intent?,
-        finishFOFlow: () -> Unit,
-
-        ) {
+        finishFOFlow: () -> Unit
+    ) {
         goNextScreen(context, "", false)
         this.intentWhenFinish = intentWhenFinish
         this.finishFOFlow = finishFOFlow
@@ -130,12 +127,33 @@ object FOFlowManager {
         )
     }
 
-    fun isShowDefaultAds(idScreen: String): Boolean {
-        return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
+    fun setDataOnboardingItem(items: List<OnboardingItemModel>) {
+        config = config.copy(
+            onboarding = config.onboarding.copy(
+                items = items
+            )
+        )
     }
 
-    fun isEnableShowAdsBySpaceName(space: String): Boolean {
-        return (isEnableShowAdsBySpaceName.invoke(space))
+    fun setShowInterAdsOnboarding(isShow: Boolean) {
+        config = config.copy(
+            onboarding = config.onboarding.copy(
+                showAdsInter = isShow
+            )
+        )
+    }
+
+    fun setShowInterAdsLanguage(isShow: Boolean) {
+        config = config.copy(
+            language = config.language.copy(
+                showAdsInter = isShow
+            )
+        )
+    }
+
+
+    fun isShowDefaultAds(idScreen: String): Boolean {
+        return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
     }
 
     private fun getStringAssetFile(context: Context, path: String): String? {

@@ -8,5 +8,6 @@ data class LanguageConfig(
     val nameSpaceAds: String,
     val nameTracking: String,
     val codeLanguage: String,
+    val showAdsInter: Boolean,
     val items: List<LanguageItemModel> = listOf()
 )

@@ -9,5 +9,6 @@ data class OnboardingConfig(
     val nameSpaceAds: String,
     val nameSpaceAdsFull: String,
     val nameTracking: String,
+    val showAdsInter: Boolean,
     val items: List<OnboardingItemModel> = listOf(),
 )

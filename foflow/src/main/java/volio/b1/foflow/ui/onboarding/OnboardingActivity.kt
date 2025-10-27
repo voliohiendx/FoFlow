@@ -33,14 +33,7 @@ import volio.b1.foflow.model.OnboardingItemModel
 class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
-        val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
-            if (item.type == OnboardingItemModel.TYPE_ADS) {
-                FOFlowManager.isEnableShowAdsBySpaceName(FOFlowManager.config.onboarding.nameSpaceAdsFull)
-            } else {
-                true
-            }
-        }
-
+        val filteredItems = FOFlowManager.config.onboarding.items
         OnboardingAdapter(
             items = filteredItems
         ) { view ->
@@ -97,8 +90,16 @@ class OnboardingActivity : AppCompatActivity() {
                 val isShowOnlyScreen =
                     intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
-                FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                finish()
+                if (FOFlowManager.config.onboarding.showAdsInter) {
+                    FOFlowManager.callback?.showInterAds {
+                        FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+                        finish()
+                    }
+                }else{
+                    FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+                    finish()
+                }
+
             } else {
                 vpTemplate.currentItem += 1
             }
@@ -108,8 +109,15 @@ class OnboardingActivity : AppCompatActivity() {
             val isShowOnlyScreen =
                 intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
-            FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-            finish()
+            if (FOFlowManager.config.onboarding.showAdsInter) {
+                FOFlowManager.callback?.showInterAds {
+                    FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+                    finish()
+                }
+            }else{
+                FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+                finish()
+            }
 
         }
 

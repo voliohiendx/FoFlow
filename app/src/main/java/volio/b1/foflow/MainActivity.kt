@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                     nameSpaceAds = "ADMOB_Native_Language",
                     nameTracking = "language_tracking",
                     codeLanguage = "en",
+                    showAdsInter = false,
                     items = listOf(
                         LanguageItemModel(
                             code = "vi",
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     nameSpaceAds = "ADMOB_Native_Language",
                     nameSpaceAdsFull = "ADMOB_Native_Language",
                     nameTracking = "onboarding_tracking",
+                    showAdsInter = false,
                     items = listOf(
                         OnboardingItemModel(
                             title = R.string.img_onboarding_1,
@@ -99,12 +101,13 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
+                override fun showInterAds(onNextScreen: () -> Unit) {
+                    TODO("Not yet implemented")
+                }
+
             },
             context = this,
             pathAsset = "",
-            isEnableShowAds = {
-                true
-            }
         )
 
         FOFlowManager.startFOFlow(
