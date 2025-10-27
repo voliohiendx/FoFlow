@@ -1,5 +1,6 @@
 package volio.b1.foflow.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,9 +39,12 @@ class OnboardingAdapter(
 
     inner class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val layoutAds: FrameLayout = itemView.findViewById(R.id.layoutAds)
+        private val btnCloseNative: ImageView? = itemView.findViewById(R.id.btnCloseNative)
         fun bind(item: OnboardingItemModel) {
             onLoadAds.invoke(layoutAds)
-            itemView.findViewById<ImageView>(R.id.btnCloseNative)?.setPreventDoubleClick {
+            Log.d("HGUHUHUHUHUHUH", "bind: "+btnCloseNative)
+            btnCloseNative?.setPreventDoubleClick {
+                Log.d("HGUHUHUHUHUHUH", "Click: ")
                 onNextPage.invoke()
             }
         }
