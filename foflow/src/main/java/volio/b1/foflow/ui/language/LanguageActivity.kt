@@ -78,7 +78,7 @@ class LanguageActivity : AppCompatActivity() {
                 )
                 FOFlowManager.callback?.selectLanguage(code)
                 if (FOFlowManager.config.language.showAdsInter) {
-                    FOFlowManager.callback?.showInterAds {
+                    FOFlowManager.callback?.showInterAds(this.lifecycle) {
                         FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
                         finish()
                     }

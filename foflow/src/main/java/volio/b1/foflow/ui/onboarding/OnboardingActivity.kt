@@ -97,14 +97,13 @@ class OnboardingActivity : AppCompatActivity() {
                 val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
                 if (FOFlowManager.config.onboarding.showAdsInter) {
-                    FOFlowManager.callback?.showInterAds {
-                        Log.d("HUYUHUHUUHU", "initListener: ")
+                    FOFlowManager.callback?.showInterAds(this.lifecycle) {
                         FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                    //    finish()
+                        finish()
                     }
                 } else {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                 //   finish()
+                    finish()
                 }
 
             } else {
@@ -116,13 +115,13 @@ class OnboardingActivity : AppCompatActivity() {
             val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
 
             if (FOFlowManager.config.onboarding.showAdsInter) {
-                FOFlowManager.callback?.showInterAds {
+                FOFlowManager.callback?.showInterAds(this.lifecycle) {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                   // finish()
+                    finish()
                 }
             } else {
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-              //  finish()
+                finish()
             }
 
         }
