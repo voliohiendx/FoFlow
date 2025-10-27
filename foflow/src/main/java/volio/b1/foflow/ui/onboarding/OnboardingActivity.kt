@@ -33,7 +33,13 @@ import volio.b1.foflow.model.OnboardingItemModel
 class OnboardingActivity : AppCompatActivity() {
 
     val adapter by lazy {
-        val filteredItems = FOFlowManager.config.onboarding.items
+        val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
+            if (item.type == OnboardingItemModel.TYPE_ADS) {
+                FOFlowManager.isEnableShowAds(FOFlowManager.config.onboarding.nameSpaceAdsFull)
+            } else {
+                true
+            }
+        }
         OnboardingAdapter(
             items = filteredItems
         ) { view ->
@@ -42,8 +48,7 @@ class OnboardingActivity : AppCompatActivity() {
                 view,
                 if (FOFlowManager.isShowDefaultAds(idScreen))
                     R.layout.native_ads_default
-                else
-                    FOFlowManager.config.onboarding.adsLayoutResFull,
+                else FOFlowManager.config.onboarding.adsLayoutResFull,
                 FOFlowManager.config.onboarding.nameTracking
             )
         }

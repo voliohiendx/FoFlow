@@ -6,5 +6,6 @@ interface FOFlowCallback {
     fun showNativeAds(spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int, screenName: String)
     fun pushTracking(isResume: Boolean, screenName: String)
     fun selectLanguage(codeLanguage: String)
-    fun showInterAds(onNextScreen: () -> Unit, )
+    fun showInterAds(onNextScreen: () -> Unit)
+    fun isEnableShowAds(spaceName: String): Boolean
 }

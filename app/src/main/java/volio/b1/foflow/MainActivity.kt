@@ -102,7 +102,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun showInterAds(onNextScreen: () -> Unit) {
-                    TODO("Not yet implemented")
+
+                }
+
+                override fun isEnableShowAds(spaceName: String): Boolean {
+                    return true
                 }
 
             },

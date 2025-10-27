@@ -25,12 +25,11 @@ object FOFlowManager {
         add(FlowModel("onboarding", isShowAdsDefault = false))
     }
 
-
     fun init(
         context: Context,
         pathAsset: String,
         config: FoFlowConfig,
-        callback: FOFlowCallback,
+        callback: FOFlowCallback
     ) {
         this.config = config
         this.callback = callback
@@ -154,6 +153,10 @@ object FOFlowManager {
 
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
+    }
+
+    fun isEnableShowAds(spaceName: String): Boolean {
+        return callback?.isEnableShowAds(spaceName) ?: false
     }
 
     private fun getStringAssetFile(context: Context, path: String): String? {
