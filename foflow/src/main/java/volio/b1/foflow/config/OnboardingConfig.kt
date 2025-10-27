@@ -9,5 +9,5 @@ data class OnboardingConfig(
     val nameSpaceAds: String,
     val nameSpaceAdsFull: String,
     val nameTracking: String,
-    val items: List<OnboardingItemModel> = listOf()
+    val items: List<OnboardingItemModel> = listOf(),
 )

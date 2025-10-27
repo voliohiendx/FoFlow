@@ -35,7 +35,7 @@ class OnboardingActivity : AppCompatActivity() {
     val adapter by lazy {
         val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
             if (item.type == OnboardingItemModel.TYPE_ADS) {
-                FOFlowManager.isEnableShowAds(FOFlowManager.config.onboarding.nameSpaceAdsFull)
+                FOFlowManager.isEnableShowAdsBySpaceName(FOFlowManager.config.onboarding.nameSpaceAdsFull)
             } else {
                 true
             }
@@ -126,18 +126,21 @@ class OnboardingActivity : AppCompatActivity() {
                 autoScrollJob?.cancel()
 
                 if (FOFlowManager.config.onboarding.items[position].type == OnboardingItemModel.TYPE_ADS) {
-                    autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
-                        delay(8000)
-                        if (position < adapter.itemCount - 1) {
-                            withContext(Dispatchers.Main) {
-                                vpTemplate.setCurrentItem(position + 1, true)
+                    val timeDelayNextScreen =
+                        FOFlowManager.config.onboarding.items[position].timeDelayNextScreenAdsFull
+                    if (timeDelayNextScreen > 0) {
+                        autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
+                            delay(timeDelayNextScreen)
+                            if (position < adapter.itemCount - 1) {
+                                withContext(Dispatchers.Main) {
+                                    vpTemplate.setCurrentItem(position + 1, true)
+                                }
                             }
                         }
                     }
-                    if (tvGetStarted != null) {
-                        tvGetStarted.visibility = View.INVISIBLE
-                        tvNext.visibility = View.INVISIBLE
-                    }
+
+                    tvGetStarted?.visibility = View.INVISIBLE
+                    tvNext.visibility = View.INVISIBLE
                 } else {
                     if (position == adapter.itemCount - 1) {
                         if (tvGetStarted != null) {

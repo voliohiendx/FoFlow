@@ -2,16 +2,10 @@ package volio.b1.foflow
 
 import android.content.Context
 import android.content.Intent
-import android.os.FileUtils
-import android.view.ViewGroup
-import android.widget.Space
 import androidx.annotation.LayoutRes
 import volio.b1.foflow.model.FlowModel
 import volio.b1.foflow.ui.language.LanguageActivity
-import volio.b1.foflow.config.LanguageConfig
-import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.ui.onboarding.OnboardingActivity
-import volio.b1.foflow.model.OnboardingItemModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import volio.b1.foflow.config.FoFlowConfig
@@ -30,18 +24,18 @@ object FOFlowManager {
         add(FlowModel("onboarding", isShowAdsDefault = false))
     }
 
-    var isEnableShowAds: (String) -> Boolean = { true }
+    var isEnableShowAdsBySpaceName: (String) -> Boolean = { true }
 
     fun init(
         context: Context,
         pathAsset: String,
         config: FoFlowConfig,
         callback: FOFlowCallback,
-        isEnableShowAds: (String) -> Boolean
+        isEnableShowAdsBySpaceName: (String) -> Boolean
     ) {
         this.config = config
         this.callback = callback
-        this.isEnableShowAds = isEnableShowAds
+        this.isEnableShowAdsBySpaceName = isEnableShowAdsBySpaceName
         getStringAssetFile(context, pathAsset)?.let {
             initDataRemote(it)
         }
@@ -140,8 +134,8 @@ object FOFlowManager {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
     }
 
-    fun isEnableShowAds(space: String): Boolean {
-        return (isEnableShowAds.invoke(space))
+    fun isEnableShowAdsBySpaceName(space: String): Boolean {
+        return (isEnableShowAdsBySpaceName.invoke(space))
     }
 
     private fun getStringAssetFile(context: Context, path: String): String? {

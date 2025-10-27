@@ -6,7 +6,8 @@ data class OnboardingItemModel(
     val pathImage: String,
     val adsVisibility: Int,
     val type: Int = TYPE_NORMAL,
-){
+    val timeDelayNextScreenAdsFull: Long = 0
+) {
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_ADS = 1
