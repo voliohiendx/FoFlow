@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import volio.b1.foflow.config.FoFlowConfig
 import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.config.OnboardingConfig
@@ -15,6 +16,7 @@ import volio.b1.foflow.model.LanguageItemModel
 import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
 import volio.b1.foflow.R
+import volio.b1.foflow.model.OnboardingItemModel.Companion.TYPE_ADS
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 onboarding = OnboardingConfig(
                     adsLayoutRes = R.layout.native_ads_default,
-                    adsLayoutResFull = R.layout.native_ads_default,
+                    adsLayoutResFull = R.layout.native_ads_full_default,
                     nameSpaceAds = "ADMOB_Native_Language",
                     nameSpaceAdsFull = "ADMOB_Native_Language",
                     nameTracking = "onboarding_tracking",
@@ -74,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                             content = null,
                             pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
                             adsVisibility = View.GONE,
+                            type = TYPE_ADS
                         ), OnboardingItemModel(
                             title = R.string.img_onboarding_3,
                             content = null,
@@ -101,9 +104,13 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                override fun showInterAds(onNextScreen: () -> Unit) {
-                    onNextScreen.invoke()
+                override fun showInterAds(
+                    lifecycle: Lifecycle,
+                    onNextScreen: () -> Unit
+                ) {
+
                 }
+
 
                 override fun isEnableShowAds(spaceName: String): Boolean {
                     return true
