@@ -127,6 +127,14 @@ object FOFlowManager {
         )
     }
 
+    fun setOnboardingLayoutAdsFull(@LayoutRes adsLayoutRes: Int) {
+        config = config.copy(
+            onboarding = config.onboarding.copy(
+                adsLayoutResFull = adsLayoutRes
+            )
+        )
+    }
+
     fun setDataOnboardingItem(items: List<OnboardingItemModel>) {
         config = config.copy(
             onboarding = config.onboarding.copy(
@@ -150,7 +158,6 @@ object FOFlowManager {
             )
         )
     }
-
 
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
