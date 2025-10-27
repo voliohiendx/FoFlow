@@ -31,6 +31,11 @@ import kotlinx.coroutines.withContext
 import volio.b1.foflow.model.OnboardingItemModel
 
 class OnboardingActivity : AppCompatActivity() {
+    private lateinit var vpTemplate: ViewPager2
+    private lateinit var tvNext: TextView
+    private lateinit var tvGetStarted: TextView
+    private lateinit var dotsIndicator: DotsIndicator
+    private lateinit var layoutAds: FrameLayout
 
     val adapter by lazy {
         val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
@@ -43,16 +48,19 @@ class OnboardingActivity : AppCompatActivity() {
 
         FOFlowManager.setDataOnboardingItem(filteredItems)
         OnboardingAdapter(
-            items = filteredItems
-        ) { view ->
-            FOFlowManager.callback?.showNativeAds(
-                FOFlowManager.config.onboarding.nameSpaceAdsFull,
-                view,
-                if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default
-                else FOFlowManager.config.onboarding.adsLayoutResFull,
-                FOFlowManager.config.onboarding.nameTracking
-            )
-        }
+            items = filteredItems, onLoadAds = { view ->
+                FOFlowManager.callback?.showNativeAds(
+                    FOFlowManager.config.onboarding.nameSpaceAdsFull,
+                    view,
+                    if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default
+                    else FOFlowManager.config.onboarding.adsLayoutResFull,
+                    FOFlowManager.config.onboarding.nameTracking
+                )
+
+            }, onNextPage = {
+                onNextPage()
+            }
+        )
     }
 
     private var autoScrollJob: Job? = null
@@ -62,6 +70,7 @@ class OnboardingActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_onboarding)
         hideNavigationBar()
+        initView()
         val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
 
         FOFlowManager.callback?.showNativeAds(
@@ -75,6 +84,14 @@ class OnboardingActivity : AppCompatActivity() {
 
     }
 
+    private fun initView() {
+        vpTemplate = findViewById(R.id.vpTemplate)
+        tvNext = findViewById(R.id.tvNext)
+        tvGetStarted = findViewById(R.id.tvGetStarted)
+        dotsIndicator = findViewById(R.id.dots_indicator)
+        layoutAds = findViewById(R.id.layoutAds)
+    }
+
     private fun setupViewPage() {
         val vpTemplate = findViewById<ViewPager2>(R.id.vpTemplate)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
@@ -84,66 +101,40 @@ class OnboardingActivity : AppCompatActivity() {
         dotsIndicator.attachTo(vpTemplate)
     }
 
-    fun initListener() {
+    private fun initListener() {
         val vpTemplate = findViewById<ViewPager2>(R.id.vpTemplate)
         val tvNext = findViewById<TextView>(R.id.tvNext)
+        val tvGetStarted = findViewById<TextView>(R.id.tvGetStarted)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
-        val tvGetStarted: TextView? = findViewById<TextView>(R.id.tvGetStarted)
         val layoutAds = findViewById<FrameLayout>(R.id.layoutAds)
-        tvGetStarted?.visibility = View.INVISIBLE
+
+        tvGetStarted.visibility = View.INVISIBLE
 
         tvNext.setPreventDoubleClick {
-            if (vpTemplate.currentItem == adapter.itemCount - 1) {
-                val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
-
-                if (FOFlowManager.config.onboarding.showAdsInter) {
-                    FOFlowManager.callback?.showInterAds(this.lifecycle) {
-                        FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                        finish()
-                    }
-                } else {
-                    FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                    finish()
-                }
-
-            } else {
-                vpTemplate.currentItem += 1
-            }
+            if (vpTemplate.currentItem == adapter.itemCount - 1) navigateNext()
+            else vpTemplate.currentItem++
         }
 
-        tvGetStarted?.setPreventDoubleClick {
-            val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
-
-            if (FOFlowManager.config.onboarding.showAdsInter) {
-                FOFlowManager.callback?.showInterAds(this.lifecycle) {
-                    FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                    finish()
-                }
-            } else {
-                FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                finish()
-            }
-
-        }
+        tvGetStarted.setPreventDoubleClick { navigateNext() }
 
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (layoutAds.isNotEmpty()) {
-                    layoutAds.visibility =
-                        FOFlowManager.config.onboarding.items[position].adsVisibility
-                } else {
-                    layoutAds.visibility = View.GONE
-                }
+
+                val currentItem = FOFlowManager.config.onboarding.items[position]
+                layoutAds.visibility =
+                    if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
 
                 autoScrollJob?.cancel()
 
-                if (FOFlowManager.config.onboarding.items[position].type == OnboardingItemModel.TYPE_ADS) {
-                    val timeDelayNextScreen =
-                        FOFlowManager.config.onboarding.items[position].timeDelayNextScreenAdsFull
-                    if (timeDelayNextScreen > 0) {
+                val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
+                val isLast = position == adapter.itemCount - 1
+
+                if (isAds) {
+                    val delayMs = currentItem.timeDelayNextScreenAdsFull
+                    if (delayMs > 0) {
                         autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
-                            delay(timeDelayNextScreen)
+                            delay(delayMs)
                             if (position < adapter.itemCount - 1) {
                                 withContext(Dispatchers.Main) {
                                     vpTemplate.setCurrentItem(position + 1, true)
@@ -151,28 +142,32 @@ class OnboardingActivity : AppCompatActivity() {
                             }
                         }
                     }
-
-                    tvGetStarted?.visibility = View.INVISIBLE
-                    tvNext.visibility = View.INVISIBLE
-                    tvNext.visibility = View.INVISIBLE
-                    dotsIndicator.visibility = View.INVISIBLE
-                } else {
-                    dotsIndicator.visibility = View.VISIBLE
-                    if (position == adapter.itemCount - 1) {
-                        if (tvGetStarted != null) {
-                            tvGetStarted.visibility = View.VISIBLE
-                            tvNext.visibility = View.INVISIBLE
-                        }
-                    } else {
-                        if (tvGetStarted != null) {
-                            tvGetStarted.visibility = View.INVISIBLE
-                            tvNext.visibility = View.VISIBLE
-                        }
-                    }
                 }
+
+                dotsIndicator.visibility = if (isAds) View.INVISIBLE else View.VISIBLE
+                tvGetStarted.visibility = if (!isAds && isLast) View.VISIBLE else View.INVISIBLE
+                tvNext.visibility = if (!isAds && !isLast) View.VISIBLE else View.INVISIBLE
             }
         })
-        this.onBackPressedDispatcher.addCallback(this, true) {}
+
+        onBackPressedDispatcher.addCallback(this, true) {}
+    }
+
+    fun onNextPage() {
+        if (vpTemplate.currentItem == adapter.itemCount - 1) navigateNext()
+        else vpTemplate.currentItem++
+    }
+
+    fun navigateNext() {
+        val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+        val goNext: () -> Unit = {
+            FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
+            finish()
+        }
+
+        if (FOFlowManager.config.onboarding.showAdsInter) {
+            FOFlowManager.callback?.showInterAds(lifecycle, goNext)
+        } else goNext()
     }
 
     override fun onResume() {

@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import volio.b1.foflow.R
 import volio.b1.foflow.adapter.OnboardingAdapter.AdsVH
 import volio.b1.foflow.model.OnboardingItemModel
+import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingAdapter(
     private val items: List<OnboardingItemModel>,
-    private val onLoadAds: (ViewGroup) -> Unit
+    private val onLoadAds: (ViewGroup) -> Unit,
+    private val onNextPage: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class NormalVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,8 +38,12 @@ class OnboardingAdapter(
 
     inner class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val layoutAds: FrameLayout = itemView.findViewById(R.id.layoutAds)
+        private val btnCloseNative: ImageView? = itemView.findViewById(R.id.btnCloseNative)
         fun bind(item: OnboardingItemModel) {
             onLoadAds.invoke(layoutAds)
+            btnCloseNative?.setPreventDoubleClick {
+                onNextPage.invoke()
+            }
         }
     }
 
