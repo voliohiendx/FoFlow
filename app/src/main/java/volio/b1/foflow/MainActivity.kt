@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     nameSpaceAds = "ADMOB_Native_Language",
                     nameSpaceAdsFull = "ADMOB_Native_Language",
                     nameTracking = "onboarding_tracking",
-                    showAdsInter = false,
+                    showAdsInter = true,
                     items = listOf(
                         OnboardingItemModel(
                             title = R.string.img_onboarding_1,
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun showInterAds(onNextScreen: () -> Unit) {
-
+                    onNextScreen.invoke()
                 }
 
                 override fun isEnableShowAds(spaceName: String): Boolean {

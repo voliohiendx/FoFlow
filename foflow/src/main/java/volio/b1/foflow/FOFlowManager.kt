@@ -2,6 +2,7 @@ package volio.b1.foflow
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.LayoutRes
 import volio.b1.foflow.model.FlowModel
 import volio.b1.foflow.ui.language.LanguageActivity

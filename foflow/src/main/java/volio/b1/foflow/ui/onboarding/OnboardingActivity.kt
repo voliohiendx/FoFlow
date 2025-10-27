@@ -87,6 +87,7 @@ class OnboardingActivity : AppCompatActivity() {
     fun initListener() {
         val vpTemplate = findViewById<ViewPager2>(R.id.vpTemplate)
         val tvNext = findViewById<TextView>(R.id.tvNext)
+        val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
         val tvGetStarted: TextView? = findViewById<TextView>(R.id.tvGetStarted)
         val layoutAds = findViewById<FrameLayout>(R.id.layoutAds)
         tvGetStarted?.visibility = View.INVISIBLE
@@ -97,12 +98,13 @@ class OnboardingActivity : AppCompatActivity() {
 
                 if (FOFlowManager.config.onboarding.showAdsInter) {
                     FOFlowManager.callback?.showInterAds {
+                        Log.d("HUYUHUHUUHU", "initListener: ")
                         FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                        finish()
+                    //    finish()
                     }
                 } else {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                    finish()
+                 //   finish()
                 }
 
             } else {
@@ -116,11 +118,11 @@ class OnboardingActivity : AppCompatActivity() {
             if (FOFlowManager.config.onboarding.showAdsInter) {
                 FOFlowManager.callback?.showInterAds {
                     FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                    finish()
+                   // finish()
                 }
             } else {
                 FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
-                finish()
+              //  finish()
             }
 
         }
@@ -153,7 +155,10 @@ class OnboardingActivity : AppCompatActivity() {
 
                     tvGetStarted?.visibility = View.INVISIBLE
                     tvNext.visibility = View.INVISIBLE
+                    tvNext.visibility = View.INVISIBLE
+                    dotsIndicator.visibility = View.INVISIBLE
                 } else {
+                    dotsIndicator.visibility = View.VISIBLE
                     if (position == adapter.itemCount - 1) {
                         if (tvGetStarted != null) {
                             tvGetStarted.visibility = View.VISIBLE
