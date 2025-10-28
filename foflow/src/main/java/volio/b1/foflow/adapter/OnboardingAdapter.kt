@@ -39,9 +39,10 @@ class OnboardingAdapter(
 
     inner class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val layoutAds: FrameLayout = itemView.findViewById(R.id.layoutAds)
+        private val btnCloseNative: ImageView? = itemView.findViewById(R.id.btnCloseNative)
         fun bind(item: OnboardingItemModel) {
             onLoadAds.invoke(layoutAds)
-            layoutAds.findViewById<ImageView>(R.id.btnCloseNative)?.setPreventDoubleClick {
+            btnCloseNative?.setPreventDoubleClick {
                 onNextPage.invoke()
             }
         }
