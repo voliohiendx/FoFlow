@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="isSelected"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,14 +20,7 @@
             android:id="@+id/viewUnSelect"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_48sdp"
-            android:background="@drawable/bg_language_un_select"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/viewSelect"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:background="@drawable/bg_language_select"
+            android:background="@{!isSelected ? @drawable/bg_language_select : @drawable/bg_language_un_select}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -54,21 +50,15 @@
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:src="@drawable/ic_language_select" />
+                android:src="@{isSelected ? @drawable/ic_language_select : @drawable/ic_language_default}"
+                tools:src="@drawable/ic_language_select" />
 
             <TextView
                 android:id="@+id/tvDefault"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Default"
-                android:layout_marginEnd="@dimen/_12sdp" />
-
-            <ImageView
-                android:id="@+id/imvUnSelect"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:src="@drawable/ic_language_default" />
+                android:text="Default" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>

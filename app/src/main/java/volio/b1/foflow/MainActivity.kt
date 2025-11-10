@@ -33,65 +33,11 @@ class MainActivity : AppCompatActivity() {
 
     fun demo() {
         FOFlowManager.init(
-            config = FoFlowConfig(
-                language = LanguageConfig(
-                    adsLayoutRes = R.layout.native_ads_default,
-                    nameSpaceAds = "ADMOB_Native_Language",
-                    nameTracking = "language_tracking",
-                    codeLanguage = "en",
-                    showAdsInter = false,
-                    items = listOf(
-                        LanguageItemModel(
-                            code = "vi",
-                            resFlagLanguage = R.drawable.flag_england_demo,
-                            nameLanguage = "Vietnamese"
-                        ),
-                        LanguageItemModel(
-                            code = "de",
-                            resFlagLanguage = R.drawable.flag_england_demo,
-                            nameLanguage = "Brazilian"
-                        ),
-                        LanguageItemModel(
-                            code = "en",
-                            resFlagLanguage = R.drawable.flag_england_demo,
-                            nameLanguage = "Englis"
-                        ),
-                    )
-                ),
-                onboarding = OnboardingConfig(
-                    adsLayoutRes = R.layout.native_ads_default,
-                    adsLayoutResFull = R.layout.native_ads_full_default,
-                    nameSpaceAds = "ADMOB_Native_Language",
-                    nameSpaceAdsFull = "ADMOB_Native_Language",
-                    nameTracking = "onboarding_tracking",
-                    showAdsInter = true,
-                    items = listOf(
-                        OnboardingItemModel(
-                            title = R.string.img_onboarding_1,
-                            content = null,
-                            pathImage = "file:///android_asset/onboarding/img_onboarding_1.jpg",
-                            adsVisibility = View.VISIBLE,
-                        ), OnboardingItemModel(
-                            title = R.string.img_onboarding_2,
-                            content = null,
-                            pathImage = "file:///android_asset/onboarding/img_onboarding_2.jpg",
-                            adsVisibility = View.GONE,
-                            type = TYPE_ADS
-                        ), OnboardingItemModel(
-                            title = R.string.img_onboarding_3,
-                            content = null,
-                            pathImage = "file:///android_asset/onboarding/img_onboarding_3.jpg",
-                            adsVisibility = View.VISIBLE,
-                        )
-                    )
-                )
-            ),
+            context = this,
+            pathAsset = "",
             callback = object : FOFlowCallback {
                 override fun showNativeAds(
-                    spaceName: String,
-                    viewGroup: ViewGroup,
-                    idLayoutAds: Int,
-                    screenName: String
+                    spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int, screenName: String
                 ) {
 
                 }
@@ -105,8 +51,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun showInterAds(
-                    lifecycle: Lifecycle,
-                    onNextScreen: () -> Unit
+                    lifecycle: Lifecycle, onNextScreen: () -> Unit
                 ) {
 
                 }
@@ -115,16 +60,23 @@ class MainActivity : AppCompatActivity() {
                 override fun isEnableShowAds(spaceName: String): Boolean {
                     return true
                 }
-
             },
-            context = this,
-            pathAsset = "",
+        )
+        FOFlowManager.initDataConfig(
+            config = FoFlowConfig.Builder().language(
+                    LanguageConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)
+                        .setNameSpaceAds("").setNameTracking("").setCodeLanguage("")
+                        .setShowAdsInter(false).setItems(listOf()).build()
+                ).onboarding(
+                    OnboardingConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)
+                        .setAdsLayoutResFull(R.layout.native_ads_full_default).setNameSpaceAds("")
+                        .setNameSpaceAdsFull("").setNameTracking("").setShowAdsInter(false)
+                        .setItems(listOf()).build()
+                ).build()
         )
 
         FOFlowManager.startFOFlow(
-            this,
-            intentWhenFinish = Intent(this, MainActivity::class.java),
-            finishFOFlow = {
+            this, intentWhenFinish = Intent(this, MainActivity::class.java), finishFOFlow = {
 
             })
 

@@ -21,6 +21,8 @@ object FOFlowManager {
 
     var callback: FOFlowCallback? = null
 
+    var isInitDataConfig = false
+
     private val flowData = mutableListOf<FlowModel>().apply {
         add(FlowModel("language", isShowAdsDefault = true))
         add(FlowModel("onboarding", isShowAdsDefault = false))
@@ -29,14 +31,17 @@ object FOFlowManager {
     fun init(
         context: Context,
         pathAsset: String,
-        config: FoFlowConfig,
         callback: FOFlowCallback
     ) {
-        this.config = config
         this.callback = callback
         getStringAssetFile(context, pathAsset)?.let {
             initDataRemote(it)
         }
+    }
+
+    fun initDataConfig(config: FoFlowConfig) {
+        this.config = config
+        isInitDataConfig = true
     }
 
     fun initDataRemote(jsonConfig: String) {
@@ -51,9 +56,13 @@ object FOFlowManager {
         intentWhenFinish: Intent?,
         finishFOFlow: () -> Unit
     ) {
-        goNextScreen(context, "", false)
-        this.intentWhenFinish = intentWhenFinish
-        this.finishFOFlow = finishFOFlow
+        if (isInitDataConfig) {
+            goNextScreen(context, "", false)
+            this.intentWhenFinish = intentWhenFinish
+            this.finishFOFlow = finishFOFlow
+        } else {
+            throw IllegalStateException("FOFlowManager chưa được khởi tạo. Hãy gọi FOFlowManager.initDataConfig() trước khi startFOFlow().")
+        }
     }
 
     fun goNextScreen(context: Context, idScreen: String, isShowOnlyScreen: Boolean) {
@@ -93,22 +102,24 @@ object FOFlowManager {
         idScreen: String,
         intentWhenFinish: Intent?,
     ) {
-        this.intentWhenFinish = intentWhenFinish
-        when (idScreen) {
-            LanguageActivity.idScreen -> {
-                context.startActivity(Intent(context, LanguageActivity::class.java).apply {
-                    putExtra(LanguageActivity.isShowOnlyScreen, true)
-                })
-                return
-            }
+        if (isInitDataConfig) {
+            this.intentWhenFinish = intentWhenFinish
+            when (idScreen) {
+                LanguageActivity.idScreen -> {
+                    context.startActivity(Intent(context, LanguageActivity::class.java).apply {
+                        putExtra(LanguageActivity.isShowOnlyScreen, true)
+                    })
+                    return
+                }
 
-            OnboardingActivity.idScreen -> {
-                context.startActivity(Intent(context, OnboardingActivity::class.java).apply {
-                    putExtra(OnboardingActivity.isShowOnlyScreen, true)
-                })
-                return
+                OnboardingActivity.idScreen -> {
+                    context.startActivity(Intent(context, OnboardingActivity::class.java).apply {
+                        putExtra(OnboardingActivity.isShowOnlyScreen, true)
+                    })
+                    return
+                }
             }
-        }
+        } else throw IllegalStateException("FOFlowManager chưa được khởi tạo. Hãy gọi FOFlowManager.initDataConfig() trước khi startFOFlow().")
     }
 
     fun setLanguageLayoutAds(@LayoutRes adsLayoutRes: Int) {
