@@ -16,13 +16,6 @@
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginVertical="@dimen/_4sdp">
 
-        <View
-            android:id="@+id/viewUnSelect"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:background="@{!isSelected ? @drawable/bg_language_select : @drawable/bg_language_un_select}"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="@dimen/_48sdp"
@@ -45,14 +38,6 @@
                 android:textColor="#000000"
                 tools:text="English" />
 
-            <ImageView
-                android:id="@+id/imvSelect"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:src="@{isSelected ? @drawable/ic_language_select : @drawable/ic_language_default}"
-                tools:src="@drawable/ic_language_select" />
-
             <TextView
                 android:id="@+id/tvDefault"
                 android:layout_width="wrap_content"
@@ -60,6 +45,13 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:text="Default" />
 
+            <ImageView
+                android:id="@+id/imvSelect"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@{isSelected ? @drawable/ic_language_select : @drawable/ic_language_default}"
+                tools:src="@drawable/ic_language_select" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
