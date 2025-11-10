@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.databinding.ViewDataBinding
-import androidx.databinding.library.baseAdapters.BR
 import volio.b1.foflow.R
 import volio.b1.foflow.model.LanguageItemModel
 
@@ -19,40 +17,42 @@ class LanguageAdapter(
 
     private var selectedPosition: Int = selected
 
-    inner class VH(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvLanguageSelect: TextView = itemView.findViewById(R.id.tvLanguageSelect)
+        private val tvLanguageUnselect: TextView = itemView.findViewById(R.id.tvLanguageUnselect)
+        private val imvFlagLanguage: ImageView = itemView.findViewById(R.id.imvFlagLanguage)
+        private val imvSelect: ImageView = itemView.findViewById(R.id.imvSelect)
+        private val imvUnSelect: ImageView = itemView.findViewById(R.id.imvUnSelect)
+        private val viewUnSelect: View = itemView.findViewById(R.id.viewUnSelect)
+        private val viewSelect: View = itemView.findViewById(R.id.viewSelect)
+        private val tvDefault: TextView? = itemView.findViewById(R.id.tvDefault)
+
         fun bind(item: LanguageItemModel, isSelected: Boolean, isDefault: Boolean) {
-            // Truy cập trực tiếp view con
-            val tvLanguage = binding.root.findViewById<TextView>(R.id.tvLanguage)
-            val imvFlagLanguage = binding.root.findViewById<ImageView>(R.id.imvFlagLanguage)
-            val tvDefault = binding.root.findViewById<TextView>(R.id.tvDefault)
-
-            tvLanguage.text = item.nameLanguage
-            imvFlagLanguage.setImageResource(item.resFlagLanguage)
+            tvLanguageSelect.text = item.nameLanguage
+            tvLanguageUnselect.text = item.nameLanguage
+            tvLanguageSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
+            imvSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
+            imvUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
+            tvLanguageUnselect.visibility = if (isSelected) View.GONE else View.VISIBLE
+            viewSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
+            viewUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
             tvDefault?.visibility = if (isDefault) View.VISIBLE else View.GONE
+            imvFlagLanguage.setImageResource(item.resFlagLanguage)
 
-            val isSelectedId = binding.root.context.resources.getIdentifier(
-                "isSelected", "id", binding.root.context.packageName
-            )
-
-            binding.setVariable(isSelectedId, isSelected)
-
-            binding.root.setOnClickListener {
+            itemView.setOnClickListener {
                 val oldPos = selectedPosition
                 selectedPosition = bindingAdapterPosition
                 notifyItemChanged(oldPos)
                 notifyItemChanged(selectedPosition)
                 onClick(item)
             }
-
-            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val inflater = LayoutInflater.from(parent.context)
-        val root = inflater.inflate(R.layout.item_language, parent, false)
-        val binding = androidx.databinding.DataBindingUtil.bind<ViewDataBinding>(root)!!
-        return VH(binding)
+        val layoutId = R.layout.item_language
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        return VH(view)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) =
