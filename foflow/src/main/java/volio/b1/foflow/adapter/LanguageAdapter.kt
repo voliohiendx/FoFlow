@@ -1,9 +1,14 @@
 package volio.b1.foflow.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import volio.b1.foflow.databinding.ItemLanguageBinding
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
+import volio.b1.foflow.R
 import volio.b1.foflow.model.LanguageItemModel
 
 class LanguageAdapter(
@@ -14,15 +19,22 @@ class LanguageAdapter(
 
     private var selectedPosition: Int = selected
 
-    inner class VH(val binding: ItemLanguageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VH(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: LanguageItemModel, isSelected: Boolean, isDefault: Boolean) {
-            binding.tvLanguage.text = item.nameLanguage
-            binding.imvFlagLanguage.setImageResource(item.resFlagLanguage)
+            // Truy cập trực tiếp view con
+            val tvLanguage = binding.root.findViewById<TextView>(R.id.tvLanguage)
+            val imvFlagLanguage = binding.root.findViewById<ImageView>(R.id.imvFlagLanguage)
+            val tvDefault = binding.root.findViewById<TextView>(R.id.tvDefault)
 
-            // Gán biến cho DataBinding
-            binding.isSelected = isSelected
-            binding.tvDefault.visibility =
-                if (isDefault) android.view.View.VISIBLE else android.view.View.GONE
+            tvLanguage.text = item.nameLanguage
+            imvFlagLanguage.setImageResource(item.resFlagLanguage)
+            tvDefault?.visibility = if (isDefault) View.VISIBLE else View.GONE
+
+            val isSelectedId = binding.root.context.resources.getIdentifier(
+                "isSelected", "id", binding.root.context.packageName
+            )
+
+            binding.setVariable(isSelectedId, isSelected)
 
             binding.root.setOnClickListener {
                 val oldPos = selectedPosition
@@ -31,13 +43,15 @@ class LanguageAdapter(
                 notifyItemChanged(selectedPosition)
                 onClick(item)
             }
+
             binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val binding =
-            ItemLanguageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val root = inflater.inflate(R.layout.item_language, parent, false)
+        val binding = androidx.databinding.DataBindingUtil.bind<ViewDataBinding>(root)!!
         return VH(binding)
     }
 
