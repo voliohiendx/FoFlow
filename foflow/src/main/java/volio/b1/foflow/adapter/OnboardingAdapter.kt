@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import volio.b1.foflow.R
 import volio.b1.foflow.adapter.OnboardingAdapter.AdsVH
@@ -25,9 +26,22 @@ class OnboardingAdapter(
         private val tvDescriptionOnboarding: TextView =
             itemView.findViewById(R.id.tvDescriptionOnboarding)
         private val imgOnboarding: ImageView = itemView.findViewById(R.id.imgOnboarding)
+        private val lotteOnboarding: LottieAnimationView =
+            itemView.findViewById(R.id.lotteOnboarding)
+
         fun bind(item: OnboardingItemModel) {
 
-            Glide.with(itemView).load(item.pathImage).into(imgOnboarding)
+            val isJsonFile = item.pathImage.lowercase().endsWith(".json")
+            if (isJsonFile) {
+                lotteOnboarding.setAnimation(item.pathImage)
+                lotteOnboarding.visibility = View.VISIBLE
+                imgOnboarding.visibility = View.GONE
+            } else {
+                Glide.with(itemView).load(item.pathImage).into(imgOnboarding)
+                imgOnboarding.visibility = View.VISIBLE
+                lotteOnboarding.visibility = View.GONE
+            }
+
             tvTitleOnboarding.text = itemView.context.getString(item.title)
 
             if (item.content != null) {
