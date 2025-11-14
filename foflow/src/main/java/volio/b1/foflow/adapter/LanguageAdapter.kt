@@ -18,26 +18,26 @@ class LanguageAdapter(
     private var selectedPosition: Int = selected
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvLanguageSelect: TextView = itemView.findViewById(R.id.tvLanguageSelect)
-        private val tvLanguageUnselect: TextView = itemView.findViewById(R.id.tvLanguageUnselect)
-        private val imvFlagLanguage: ImageView = itemView.findViewById(R.id.imvFlagLanguage)
-        private val imvSelect: ImageView = itemView.findViewById(R.id.imvSelect)
-        private val imvUnSelect: ImageView = itemView.findViewById(R.id.imvUnSelect)
-        private val viewUnSelect: View = itemView.findViewById(R.id.viewUnSelect)
-        private val viewSelect: View = itemView.findViewById(R.id.viewSelect)
+        private val tvLanguageSelect: TextView? = itemView.findViewById(R.id.tvLanguageSelect)
+        private val tvLanguageUnselect: TextView? = itemView.findViewById(R.id.tvLanguageUnselect)
+        private val imvFlagLanguage: ImageView? = itemView.findViewById(R.id.imvFlagLanguage)
+        private val imvSelect: ImageView? = itemView.findViewById(R.id.imvSelect)
+        private val imvUnSelect: ImageView? = itemView.findViewById(R.id.imvUnSelect)
+        private val viewUnSelect: View? = itemView.findViewById(R.id.viewUnSelect)
+        private val viewSelect: View? = itemView.findViewById(R.id.viewSelect)
         private val tvDefault: TextView? = itemView.findViewById(R.id.tvDefault)
 
         fun bind(item: LanguageItemModel, isSelected: Boolean, isDefault: Boolean) {
-            tvLanguageSelect.text = item.nameLanguage
-            tvLanguageUnselect.text = item.nameLanguage
-            tvLanguageSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
-            imvSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
-            imvUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
-            tvLanguageUnselect.visibility = if (isSelected) View.GONE else View.VISIBLE
-            viewSelect.visibility = if (isSelected) View.VISIBLE else View.GONE
-            viewUnSelect.visibility = if (isSelected) View.GONE else View.VISIBLE
+            tvLanguageSelect?.text = item.nameLanguage
+            tvLanguageUnselect?.text = item.nameLanguage
+            tvLanguageSelect?.visibility = if (isSelected) View.VISIBLE else View.GONE
+            imvSelect?.visibility = if (isSelected) View.VISIBLE else View.GONE
+            imvUnSelect?.visibility = if (isSelected) View.GONE else View.VISIBLE
+            tvLanguageUnselect?.visibility = if (isSelected) View.GONE else View.VISIBLE
+            viewSelect?.visibility = if (isSelected) View.VISIBLE else View.GONE
+            viewUnSelect?.visibility = if (isSelected) View.GONE else View.VISIBLE
             tvDefault?.visibility = if (isDefault) View.VISIBLE else View.GONE
-            imvFlagLanguage.setImageResource(item.resFlagLanguage)
+            imvFlagLanguage?.setImageResource(item.resFlagLanguage)
 
             itemView.setOnClickListener {
                 val oldPos = selectedPosition

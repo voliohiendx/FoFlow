@@ -194,7 +194,7 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     private fun setSelectAlpha(code: String) {
-        val alphaValue = if (code.isEmpty()) 0.1f else 1f
+        val alphaValue = if (code.isEmpty()) 0.3f else 1f
         imvSelect?.alpha = alphaValue
         tvSelect?.alpha = alphaValue
     }

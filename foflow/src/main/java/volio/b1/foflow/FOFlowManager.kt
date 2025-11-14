@@ -122,18 +122,20 @@ object FOFlowManager {
         } else throw IllegalStateException("FOFlowManager chưa được khởi tạo. Hãy gọi FOFlowManager.initDataConfig() trước khi startFOFlow().")
     }
 
-    fun setLanguageLayoutAds(@LayoutRes adsLayoutRes: List<Int>) {
+    fun setLanguageLayoutAds(@LayoutRes adsLayoutRes: List<Int>, nameSpaceAds: List<String>) {
         config = config.copy(
             language = config.language.copy(
-                adsLayoutRes = adsLayoutRes
+                adsLayoutRes = adsLayoutRes,
+                nameSpaceAds = nameSpaceAds
             )
         )
     }
 
-    fun setLanguageLayoutAdsReload(@LayoutRes adsLayoutRes: List<Int>) {
+    fun setLanguageLayoutAdsReload(@LayoutRes adsLayoutRes: List<Int>, nameSpaceAds: List<String>) {
         config = config.copy(
             language = config.language.copy(
-                adsLayoutResReload = adsLayoutRes
+                adsLayoutResReload = adsLayoutRes,
+                nameSpaceAdsReload = nameSpaceAds
             )
         )
     }
@@ -146,10 +148,14 @@ object FOFlowManager {
         )
     }
 
-    fun setOnboardingLayoutAdsFull(@LayoutRes adsLayoutRes: List<Int>) {
+    fun setOnboardingLayoutAdsFull(
+        @LayoutRes adsLayoutRes: List<Int>,
+        nameSpaceAdsFull: List<String>
+    ) {
         config = config.copy(
             onboarding = config.onboarding.copy(
-                adsLayoutResFull = adsLayoutRes
+                adsLayoutResFull = adsLayoutRes,
+                nameSpaceAdsFull = nameSpaceAdsFull,
             )
         )
     }
