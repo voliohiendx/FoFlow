@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.LanguageAdapter
-import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.R
 
 class LanguageActivity : AppCompatActivity() {
@@ -51,7 +51,7 @@ class LanguageActivity : AppCompatActivity() {
         tvSelect = findViewById<TextView>(R.id.tvSelect)
         imvSelect = findViewById<ImageView>(R.id.imvSelect)
         imgBack = findViewById<ImageView>(R.id.imgBack)
-        viewApplyLanguage = findViewById<View>(R.id.clApplyLanguage)
+        viewApplyLanguage = findViewById<ConstraintLayout>(R.id.clApplyLanguage)
 
         setSelectAlpha(code)
     }
@@ -179,7 +179,7 @@ class LanguageActivity : AppCompatActivity() {
                     finish()
                 }
             }
-            if (FOFlowManager.config.language.showUiAppy && viewApplyLanguage != null) {
+            if (FOFlowManager.config.language.showUiApply && viewApplyLanguage != null) {
                 viewApplyLanguage?.visibility = View.VISIBLE
 
                 viewApplyLanguage?.postDelayed({

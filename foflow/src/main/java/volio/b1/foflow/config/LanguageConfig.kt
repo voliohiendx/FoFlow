@@ -11,7 +11,7 @@ data class LanguageConfig(
     val nameTracking: String,
     val codeLanguage: String,
     val showAdsInter: Boolean,
-    val showUiAppy: Boolean,
+    val showUiApply: Boolean,
     val items: List<LanguageItemModel> = listOf()
 ) {
     class Builder {
@@ -22,7 +22,7 @@ data class LanguageConfig(
         private var nameTracking: String = ""
         private var codeLanguage: String = "en"
         private var showAdsInter: Boolean = false
-        private var showUiAppy: Boolean = false
+        private var showUiApply: Boolean = false
         private var items: List<LanguageItemModel> = emptyList()
 
         fun setAdsLayoutRes(@LayoutRes res: List<Int>) = apply { this.adsLayoutRes = res }
@@ -33,7 +33,7 @@ data class LanguageConfig(
         fun setNameTracking(name: String) = apply { this.nameTracking = name }
         fun setCodeLanguage(code: String) = apply { this.codeLanguage = code }
         fun setShowAdsInter(show: Boolean) = apply { this.showAdsInter = show }
-        fun setShowUiAppy(show: Boolean) = apply { this.showUiAppy = show }
+        fun setShowUiApply(show: Boolean) = apply { this.showUiApply = show }
 
         fun setItems(items: List<LanguageItemModel>) = apply { this.items = items }
 
@@ -45,7 +45,7 @@ data class LanguageConfig(
             nameTracking = nameTracking,
             codeLanguage = codeLanguage,
             showAdsInter = showAdsInter,
-            showUiAppy = showUiAppy,
+            showUiApply = showUiApply,
             items = items
         )
     }

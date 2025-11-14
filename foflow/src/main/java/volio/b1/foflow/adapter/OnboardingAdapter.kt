@@ -22,32 +22,32 @@ class OnboardingAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class NormalVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvTitleOnboarding: TextView = itemView.findViewById(R.id.tvTitleOnboarding)
-        private val tvDescriptionOnboarding: TextView =
+        private val tvTitleOnboarding: TextView? = itemView.findViewById(R.id.tvTitleOnboarding)
+        private val tvDescriptionOnboarding: TextView? =
             itemView.findViewById(R.id.tvDescriptionOnboarding)
-        private val imgOnboarding: ImageView = itemView.findViewById(R.id.imgOnboarding)
-        private val lotteOnboarding: LottieAnimationView =
+        private val imgOnboarding: ImageView? = itemView.findViewById(R.id.imgOnboarding)
+        private val lotteOnboarding: LottieAnimationView? =
             itemView.findViewById(R.id.lotteOnboarding)
 
         fun bind(item: OnboardingItemModel) {
 
             val isJsonFile = item.pathImage.lowercase().endsWith(".json")
             if (isJsonFile) {
-                lotteOnboarding.setAnimation(item.pathImage)
-                lotteOnboarding.visibility = View.VISIBLE
-                imgOnboarding.visibility = View.GONE
+                lotteOnboarding?.setAnimation(item.pathImage)
+                lotteOnboarding?.visibility = View.VISIBLE
+                imgOnboarding?.visibility = View.GONE
             } else {
-                Glide.with(itemView).load(item.pathImage).into(imgOnboarding)
-                imgOnboarding.visibility = View.VISIBLE
-                lotteOnboarding.visibility = View.GONE
+                imgOnboarding?.let { Glide.with(itemView).load(item.pathImage).into(it) }
+                imgOnboarding?.visibility = View.VISIBLE
+                lotteOnboarding?.visibility = View.GONE
             }
 
-            tvTitleOnboarding.text = itemView.context.getString(item.title)
+            tvTitleOnboarding?.text = itemView.context.getString(item.title)
 
             if (item.content != null) {
-                tvDescriptionOnboarding.text = itemView.context.getString(item.content)
-                tvDescriptionOnboarding.visibility = View.VISIBLE
-            } else tvDescriptionOnboarding.visibility = View.GONE
+                tvDescriptionOnboarding?.text = itemView.context.getString(item.content)
+                tvDescriptionOnboarding?.visibility = View.VISIBLE
+            } else tvDescriptionOnboarding?.visibility = View.GONE
         }
     }
 
