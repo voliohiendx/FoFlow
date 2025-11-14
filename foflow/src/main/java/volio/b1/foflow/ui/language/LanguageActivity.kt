@@ -119,6 +119,7 @@ class LanguageActivity : AppCompatActivity() {
                         FOFlowManager.config.language.nameTracking
                     )
                 }
+
                 1 -> adContainerMore?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
@@ -142,6 +143,7 @@ class LanguageActivity : AppCompatActivity() {
                         FOFlowManager.config.language.nameTracking
                     )
                 }
+
                 1 -> adContainerMore?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
@@ -175,7 +177,7 @@ class LanguageActivity : AppCompatActivity() {
                 viewApplyLanguage?.visibility = View.VISIBLE
 
                 viewApplyLanguage?.postDelayed({
-                    viewApplyLanguage?.visibility = View.GONE
+                   // viewApplyLanguage?.visibility = View.GONE
                     setLanguage()
                 }, 2000)
             } else {
