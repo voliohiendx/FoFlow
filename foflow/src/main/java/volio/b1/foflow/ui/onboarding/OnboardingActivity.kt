@@ -36,15 +36,16 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var tvGetStarted: TextView
     private lateinit var dotsIndicator: DotsIndicator
     private lateinit var layoutAds: FrameLayout
-
+    var indexAds = 0
     val adapter by lazy {
         val filteredItemsWithAdsData = FOFlowManager.config.onboarding.items.mapNotNull { item ->
             if (item.type == OnboardingItemModel.TYPE_ADS) {
-                val index = FOFlowManager.config.onboarding.items.indexOf(item)
-                val ns = FOFlowManager.config.onboarding.nameSpaceAdsFull.getOrNull(index)
+                indexAds++
+                val ns = FOFlowManager.config.onboarding.nameSpaceAdsFull.getOrNull(indexAds - 1)
                     ?: return@mapNotNull null
-                val layoutRes = FOFlowManager.config.onboarding.adsLayoutResFull.getOrNull(index)
-                    ?: return@mapNotNull null
+                val layoutRes =
+                    FOFlowManager.config.onboarding.adsLayoutResFull.getOrNull(indexAds - 1)
+                        ?: return@mapNotNull null
                 if (FOFlowManager.isEnableShowAds(ns)) {
                     item to (ns to layoutRes)
                 } else null
