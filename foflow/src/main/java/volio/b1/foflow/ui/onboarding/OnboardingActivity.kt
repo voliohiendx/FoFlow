@@ -38,24 +38,33 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var layoutAds: FrameLayout
 
     val adapter by lazy {
-        val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
+        val filteredItemsWithAdsData = FOFlowManager.config.onboarding.items.mapNotNull { item ->
             if (item.type == OnboardingItemModel.TYPE_ADS) {
-                FOFlowManager.isEnableShowAds(FOFlowManager.config.onboarding.nameSpaceAdsFull)
+                val index = FOFlowManager.config.onboarding.items.indexOf(item)
+                val ns = FOFlowManager.config.onboarding.nameSpaceAdsFull.getOrNull(index)
+                    ?: return@mapNotNull null
+                val layoutRes = FOFlowManager.config.onboarding.adsLayoutResFull.getOrNull(index)
+                    ?: return@mapNotNull null
+                if (FOFlowManager.isEnableShowAds(ns)) {
+                    item to (ns to layoutRes)
+                } else null
             } else {
-                true
+                item to null
             }
         }
 
-        FOFlowManager.setDataOnboardingItem(filteredItems)
+        FOFlowManager.setDataOnboardingItem(filteredItemsWithAdsData.map { it.first })
         OnboardingAdapter(
-            items = filteredItems, onLoadAds = { view ->
-                FOFlowManager.callback?.showNativeAds(
-                    FOFlowManager.config.onboarding.nameSpaceAdsFull,
-                    view,
-                    if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default
-                    else FOFlowManager.config.onboarding.adsLayoutResFull,
-                    FOFlowManager.config.onboarding.nameTracking
-                )
+            items = filteredItemsWithAdsData.map { it.first }, onLoadAds = { view, position ->
+                val adData = filteredItemsWithAdsData.getOrNull(position)?.second
+                adData?.let { (ns, layoutRes) ->
+                    FOFlowManager.callback?.showNativeAds(
+                        ns,
+                        view,
+                        layoutRes,
+                        FOFlowManager.config.onboarding.nameTracking
+                    )
+                }
 
             }, onNextPage = {
                 onNextPage()

@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,26 +20,69 @@ import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.R
 
 class LanguageActivity : AppCompatActivity() {
-    var code = "en"
+    var code = ""
+
+    private var adContainer: FrameLayout? = null
+    private var adContainerMore: FrameLayout? = null
+    private var recyclerView: RecyclerView? = null
+    private var imvSelect: ImageView? = null
+    private var tvSelect: TextView? = null
+    private var imgBack: ImageView? = null
+    private var viewApplyLanguage: View? = null
+
+    private var lastClickTime: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_language)
         hideNavigationBar()
+        initView()
+        initRecyclerview()
+        initListener()
+        handlerShowAds()
+    }
 
-
-        val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
-        val recyclerView = findViewById<RecyclerView>(R.id.rvLanguage)
-
-        FOFlowManager.callback?.showNativeAds(
-            FOFlowManager.config.language.nameSpaceAds,
-            adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.language.adsLayoutRes,
-            FOFlowManager.config.language.nameTracking
-        )
+    fun initView() {
         code = FOFlowManager.config.language.codeLanguage
+        adContainer = findViewById<FrameLayout>(R.id.layoutAds)
+        adContainerMore = findViewById<FrameLayout>(R.id.layoutAdsMore)
+        recyclerView = findViewById<RecyclerView>(R.id.rvLanguage)
+        tvSelect = findViewById<TextView>(R.id.tvSelect)
+        imvSelect = findViewById<ImageView>(R.id.imvSelect)
+        imgBack = findViewById<ImageView>(R.id.imgBack)
+        viewApplyLanguage = findViewById<View>(R.id.clApplyLanguage)
 
+        setSelectAlpha(code)
+    }
+
+    fun initListener() {
+        val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
+
+        if (isShowOnlyScreen) {
+            imgBack?.visibility = View.VISIBLE
+        } else {
+            imgBack?.visibility = View.GONE
+        }
+
+        imvSelect?.setOnClickListener {
+            onClickNext(isShowOnlyScreen)
+        }
+        tvSelect?.setOnClickListener {
+            onClickNext(isShowOnlyScreen)
+        }
+
+        imgBack?.setOnClickListener {
+            finish()
+        }
+        this.onBackPressedDispatcher.addCallback(this, true) {
+            if (isShowOnlyScreen) {
+                finish()
+            }
+        }
+    }
+
+    fun initRecyclerview() {
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(this@LanguageActivity)
             val newList = FOFlowManager.config.language.items.toMutableList()
@@ -54,25 +98,72 @@ class LanguageActivity : AppCompatActivity() {
                 items = newList,
                 onClick = { lang ->
                     code = lang.code
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - lastClickTime >= 2000) {
+                        lastClickTime = currentTime
+                        handlerShowAdsReload()
+                    }
                 })
         }
-
-        initListener()
     }
 
-    fun initListener() {
-        val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
-        val btnNext = findViewById<TextView>(R.id.tvSelect)
-        val imgBack = findViewById<ImageView>(R.id.imgBack)
-
-        if (isShowOnlyScreen) {
-            imgBack?.visibility = View.VISIBLE
-        } else {
-            imgBack?.visibility = View.GONE
+    fun handlerShowAds() {
+        FOFlowManager.config.language.nameSpaceAds.forEachIndexed { index, it ->
+            val spaceName = it
+            val idLayoutAds = FOFlowManager.config.language.adsLayoutRes[index]
+            if (index == 0) {
+                adContainer?.let { adContainer ->
+                    FOFlowManager.callback?.showNativeAds(
+                        spaceName,
+                        adContainer,
+                        idLayoutAds,
+                        FOFlowManager.config.language.nameTracking
+                    )
+                }
+            }
+            if (index == 1) {
+                adContainerMore?.let { adContainer ->
+                    FOFlowManager.callback?.showNativeAds(
+                        spaceName,
+                        adContainer,
+                        idLayoutAds,
+                        FOFlowManager.config.language.nameTracking
+                    )
+                }
+            }
         }
+    }
 
-        btnNext?.setOnClickListener {
-            if (code != "") {
+    fun handlerShowAdsReload() {
+        FOFlowManager.config.language.nameSpaceAdsReload.forEachIndexed { index, it ->
+            val spaceName = it
+            val idLayoutAds = FOFlowManager.config.language.adsLayoutResReload[index]
+            if (index == 0) {
+                adContainer?.let { adContainer ->
+                    FOFlowManager.callback?.showNativeAds(
+                        spaceName,
+                        adContainer,
+                        idLayoutAds,
+                        FOFlowManager.config.language.nameTracking
+                    )
+                }
+            }
+            if (index == 1) {
+                adContainerMore?.let { adContainer ->
+                    FOFlowManager.callback?.showNativeAds(
+                        spaceName,
+                        adContainer,
+                        idLayoutAds,
+                        FOFlowManager.config.language.nameTracking
+                    )
+                }
+            }
+        }
+    }
+
+    fun onClickNext(isShowOnlyScreen: Boolean) {
+        if (code != "") {
+            fun setLanguage() {
                 FOFlowManager.config = FOFlowManager.config.copy(
                     language = FOFlowManager.config.language.copy(codeLanguage = code)
                 )
@@ -87,16 +178,25 @@ class LanguageActivity : AppCompatActivity() {
                     finish()
                 }
             }
-        }
+            if (FOFlowManager.config.language.showUiAppy && viewApplyLanguage != null) {
+                viewApplyLanguage?.visibility = View.VISIBLE
 
-        imgBack?.setOnClickListener {
-            finish()
-        }
-        this.onBackPressedDispatcher.addCallback(this, true) {
-            if (isShowOnlyScreen) {
-                finish()
+                viewApplyLanguage?.postDelayed({
+                    viewApplyLanguage?.visibility = View.GONE
+                    setLanguage()
+                }, 2000)
+            } else {
+                setLanguage()
             }
+        } else {
+            Toast.makeText(this, "Please select a language", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setSelectAlpha(code: String) {
+        val alphaValue = if (code.isEmpty()) 0.1f else 1f
+        imvSelect?.alpha = alphaValue
+        tvSelect?.alpha = alphaValue
     }
 
     override fun onResume() {

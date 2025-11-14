@@ -55,11 +55,36 @@
             android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@id/rvLanguage" />
 
+        <ImageView
+            android:id="@+id/imvSelect"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <FrameLayout
             android:id="@+id/layoutAds"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_74sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp" />
+
+        <FrameLayout
+            android:id="@+id/layoutAdsMore"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_74sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clApplyLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#ffffff">
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

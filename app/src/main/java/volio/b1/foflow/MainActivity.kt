@@ -64,15 +64,16 @@ class MainActivity : AppCompatActivity() {
         )
         FOFlowManager.initDataConfig(
             config = FoFlowConfig.Builder().language(
-                    LanguageConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)
-                        .setNameSpaceAds("").setNameTracking("").setCodeLanguage("")
-                        .setShowAdsInter(false).setItems(listOf()).build()
-                ).onboarding(
-                    OnboardingConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)
-                        .setAdsLayoutResFull(R.layout.native_ads_full_default).setNameSpaceAds("")
-                        .setNameSpaceAdsFull("").setNameTracking("").setShowAdsInter(false)
-                        .setItems(listOf()).build()
-                ).build()
+                LanguageConfig.Builder().setAdsLayoutRes(listOf(R.layout.native_ads_default))
+                    .setNameSpaceAds(listOf("")).setNameTracking("").setCodeLanguage("")
+                    .setShowAdsInter(false).setItems(listOf()).build()
+            ).onboarding(
+                OnboardingConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)
+                    .setAdsLayoutResFull(listOf(R.layout.native_ads_full_default))
+                    .setNameSpaceAds("")
+                    .setNameSpaceAdsFull(listOf("")).setNameTracking("").setShowAdsInter(false)
+                    .setItems(listOf()).build()
+            ).build()
         )
 
         FOFlowManager.startFOFlow(

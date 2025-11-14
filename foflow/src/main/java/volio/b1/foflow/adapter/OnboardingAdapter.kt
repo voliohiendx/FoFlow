@@ -17,7 +17,7 @@ import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingAdapter(
     private val items: List<OnboardingItemModel>,
-    private val onLoadAds: (ViewGroup) -> Unit,
+    private val onLoadAds: (ViewGroup, Int) -> Unit,
     private val onNextPage: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -54,9 +54,27 @@ class OnboardingAdapter(
     inner class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val layoutAds: FrameLayout = itemView.findViewById(R.id.layoutAds)
         private val btnCloseNative: ImageView? = itemView.findViewById(R.id.btnCloseNative)
+        private val tvNext: TextView? = itemView.findViewById(R.id.tvNext)
+        private val tvGetStarted: TextView? = itemView.findViewById(R.id.tvGetStarted)
         fun bind(item: OnboardingItemModel) {
-            onLoadAds.invoke(layoutAds)
+            onLoadAds.invoke(layoutAds, position)
+            if (tvGetStarted != null) {
+                if (position == items.size - 1) {
+                    tvGetStarted.visibility = View.VISIBLE
+                    tvNext?.visibility = View.GONE
+                } else {
+                    tvGetStarted.visibility = View.GONE
+                    tvNext?.visibility = View.VISIBLE
+                }
+            }
+
             btnCloseNative?.setPreventDoubleClick {
+                onNextPage.invoke()
+            }
+            tvNext?.setPreventDoubleClick {
+                onNextPage.invoke()
+            }
+            tvGetStarted?.setPreventDoubleClick {
                 onNextPage.invoke()
             }
         }
