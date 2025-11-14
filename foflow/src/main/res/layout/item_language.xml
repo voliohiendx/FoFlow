@@ -36,7 +36,7 @@
             android:layout_marginStart="@dimen/_12sdp" />
 
         <TextView
-            android:id="@+id/tvLanguageUnselect"
+            android:id="@+id/tvLanguage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"

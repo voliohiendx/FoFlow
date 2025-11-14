@@ -103,6 +103,7 @@ class LanguageActivity : AppCompatActivity() {
                         lastClickTime = currentTime
                         handlerShowAdsReload()
                     }
+                    setSelectAlpha(code)
                 })
         }
     }
