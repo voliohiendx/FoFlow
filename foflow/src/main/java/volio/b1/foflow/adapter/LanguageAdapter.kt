@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.R
 import volio.b1.foflow.model.LanguageItemModel
 
@@ -51,7 +52,7 @@ class LanguageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val layoutId = R.layout.item_language
+        val layoutId =  FOFlowManager.config.language.itemLanguageLayoutRes
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
         return VH(view)
     }

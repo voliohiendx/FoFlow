@@ -35,7 +35,7 @@ class LanguageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_language)
+        setContentView(FOFlowManager.config.language.languageLayoutRes)
         hideNavigationBar()
         initView()
         initRecyclerview()
@@ -109,25 +109,21 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     fun handlerShowAds() {
-        FOFlowManager.config.language.nameSpaceAds.forEachIndexed { index, it ->
-            val spaceName = it
-            val idLayoutAds = FOFlowManager.config.language.adsLayoutRes[index]
-            if (index == 0) {
-                adContainer?.let { adContainer ->
+        FOFlowManager.config.language.adsLanguage.forEachIndexed { index, (layoutRes, spaceName) ->
+            when (index) {
+                0 -> adContainer?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
-                        adContainer,
-                        idLayoutAds,
+                        container,
+                        layoutRes,
                         FOFlowManager.config.language.nameTracking
                     )
                 }
-            }
-            if (index == 1) {
-                adContainerMore?.let { adContainer ->
+                1 -> adContainerMore?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
-                        adContainer,
-                        idLayoutAds,
+                        container,
+                        layoutRes,
                         FOFlowManager.config.language.nameTracking
                     )
                 }
@@ -136,25 +132,21 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     fun handlerShowAdsReload() {
-        FOFlowManager.config.language.nameSpaceAdsReload.forEachIndexed { index, it ->
-            val spaceName = it
-            val idLayoutAds = FOFlowManager.config.language.adsLayoutResReload[index]
-            if (index == 0) {
-                adContainer?.let { adContainer ->
+        FOFlowManager.config.language.adsReload.forEachIndexed { index, (layoutRes, spaceName) ->
+            when (index) {
+                0 -> adContainer?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
-                        adContainer,
-                        idLayoutAds,
+                        container,
+                        layoutRes,
                         FOFlowManager.config.language.nameTracking
                     )
                 }
-            }
-            if (index == 1) {
-                adContainerMore?.let { adContainer ->
+                1 -> adContainerMore?.let { container ->
                     FOFlowManager.callback?.showNativeAds(
                         spaceName,
-                        adContainer,
-                        idLayoutAds,
+                        container,
+                        layoutRes,
                         FOFlowManager.config.language.nameTracking
                     )
                 }

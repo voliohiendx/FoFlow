@@ -2,7 +2,6 @@ package volio.b1.foflow
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +11,7 @@ import androidx.lifecycle.Lifecycle
 import volio.b1.foflow.config.FoFlowConfig
 import volio.b1.foflow.config.LanguageConfig
 import volio.b1.foflow.config.OnboardingConfig
-import volio.b1.foflow.model.LanguageItemModel
-import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
-import volio.b1.foflow.R
-import volio.b1.foflow.model.OnboardingItemModel.Companion.TYPE_ADS
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +59,12 @@ class MainActivity : AppCompatActivity() {
         )
         FOFlowManager.initDataConfig(
             config = FoFlowConfig.Builder().language(
-                LanguageConfig.Builder().setAdsLayoutRes(listOf(R.layout.native_ads_default))
-                    .setNameSpaceAds(listOf("")).setNameTracking("").setCodeLanguage("")
+                LanguageConfig.Builder()
+                    .setLanguageLayout(R.layout.activity_language)
+                    .setItemLanguageLayout(R.layout.item_language)
+                    .setAdsLanguage(listOf(R.layout.native_ads_default to "Native_Language"))
+                    .setAdsReload(listOf(R.layout.native_ads_default to "Native_Language"))
+                    .setNameTracking("").setCodeLanguage("")
                     .setShowAdsInter(false).setItems(listOf()).build()
             ).onboarding(
                 OnboardingConfig.Builder().setAdsLayoutRes(R.layout.native_ads_default)

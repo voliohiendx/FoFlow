@@ -149,6 +149,10 @@ class OnboardingActivity : AppCompatActivity() {
                                 withContext(Dispatchers.Main) {
                                     vpTemplate.setCurrentItem(position + 1, true)
                                 }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    navigateNext()
+                                }
                             }
                         }
                     }
