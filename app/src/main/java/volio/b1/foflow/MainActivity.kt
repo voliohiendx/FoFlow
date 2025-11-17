@@ -2,6 +2,7 @@ package volio.b1.foflow
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity() {
 
                 override fun isEnableShowAds(spaceName: String): Boolean {
                     return true
+                }
+
+                override fun showApplyLanguage(isShow: Boolean, view: View) {
+
                 }
             },
         )

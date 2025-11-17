@@ -175,10 +175,14 @@ class LanguageActivity : AppCompatActivity() {
             }
             if (FOFlowManager.config.language.showUiApply && viewApplyLanguage != null) {
                 viewApplyLanguage?.visibility = View.VISIBLE
-
+                viewApplyLanguage?.let {
+                    FOFlowManager.callback?.showApplyLanguage(true, it)
+                }
                 viewApplyLanguage?.postDelayed({
-                   // viewApplyLanguage?.visibility = View.GONE
                     setLanguage()
+                    viewApplyLanguage?.let {
+                        FOFlowManager.callback?.showApplyLanguage(false, it)
+                    }
                 }, 2000)
             } else {
                 setLanguage()

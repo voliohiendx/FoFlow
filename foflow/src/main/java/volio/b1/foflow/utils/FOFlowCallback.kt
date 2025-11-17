@@ -1,5 +1,6 @@
 package volio.b1.foflow.utils
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 
@@ -9,4 +10,6 @@ interface FOFlowCallback {
     fun selectLanguage(codeLanguage: String)
     fun showInterAds(lifecycle: Lifecycle, onNextScreen: () -> Unit)
     fun isEnableShowAds(spaceName: String): Boolean
+
+    fun showApplyLanguage(isShow: Boolean, view: View)
 }
