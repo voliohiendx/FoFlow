@@ -6,10 +6,10 @@ import androidx.lifecycle.Lifecycle
 
 interface FOFlowCallback {
     fun showNativeAds(spaceName: String, viewGroup: ViewGroup, idLayoutAds: Int, screenName: String)
-    fun pushTracking(isResume: Boolean, screenName: String)
+    fun pushTracking(isResume: Boolean, screenName: String){}
     fun selectLanguage(codeLanguage: String)
     fun showInterAds(lifecycle: Lifecycle, onNextScreen: () -> Unit)
     fun isEnableShowAds(spaceName: String): Boolean
 
-    fun showApplyLanguage(isShow: Boolean, view: View)
+    fun showApplyLanguage(isShow: Boolean, view: View){}
 }
