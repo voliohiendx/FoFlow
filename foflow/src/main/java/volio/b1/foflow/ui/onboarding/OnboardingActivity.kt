@@ -38,27 +38,38 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var layoutAds: FrameLayout
     var indexAds = 0
     val adapter by lazy {
-        val filteredItemsWithAdsData = FOFlowManager.config.onboarding.items.mapNotNull { item ->
-            if (item.type == OnboardingItemModel.TYPE_ADS) {
-                indexAds++
-                val ns = FOFlowManager.config.onboarding.nameSpaceAdsFull.getOrNull(indexAds - 1)
-                    ?: return@mapNotNull null
-                val layoutRes =
-                    FOFlowManager.config.onboarding.adsLayoutResFull.getOrNull(indexAds - 1)
-                        ?: return@mapNotNull null
-                if (FOFlowManager.isEnableShowAds(ns)) {
-                    item to (ns to layoutRes)
-                } else null
-            } else {
-                item to null
-            }
-        }
+        var indexAds = 0
 
-        FOFlowManager.setDataOnboardingItem(filteredItemsWithAdsData.map { it.first })
+        val adsFull = FOFlowManager.config.onboarding.adsOnboardingFull
+
+        val filteredItemsWithAdsData =
+            FOFlowManager.config.onboarding.items.mapIndexedNotNull { _, item ->
+                if (item.type == OnboardingItemModel.TYPE_ADS) {
+                    val adPair = adsFull.getOrNull(indexAds)
+                    indexAds++
+
+                    if (adPair != null) {
+                        val (layoutRes, ns) = adPair
+                        if (FOFlowManager.isEnableShowAds(ns)) {
+                            item to adPair
+                        } else null
+                    } else null
+                } else {
+                    item to null
+                }
+            }
+
+        // Update lại danh sách item (đã lọc bớt các item ads ẩn)
+        FOFlowManager.setDataOnboardingItem(
+            filteredItemsWithAdsData.map { it.first }
+        )
+
         OnboardingAdapter(
-            items = filteredItemsWithAdsData.map { it.first }, onLoadAds = { view, position ->
+            items = filteredItemsWithAdsData.map { it.first },
+
+            onLoadAds = { view, position ->
                 val adData = filteredItemsWithAdsData.getOrNull(position)?.second
-                adData?.let { (ns, layoutRes) ->
+                adData?.let { (layoutRes, ns) ->
                     FOFlowManager.callback?.showNativeAds(
                         ns,
                         view,
@@ -66,8 +77,9 @@ class OnboardingActivity : AppCompatActivity() {
                         FOFlowManager.config.onboarding.nameTracking
                     )
                 }
+            },
 
-            }, onNextPage = {
+            onNextPage = {
                 onNextPage()
             }
         )
@@ -81,14 +93,23 @@ class OnboardingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_onboarding)
         hideNavigationBar()
         initView()
-        val adContainer = findViewById<FrameLayout>(R.id.layoutAds)
 
-        FOFlowManager.callback?.showNativeAds(
-            FOFlowManager.config.onboarding.nameSpaceAds,
-            adContainer,
-            if (FOFlowManager.isShowDefaultAds(idScreen)) R.layout.native_ads_default else FOFlowManager.config.onboarding.adsLayoutRes,
-            FOFlowManager.config.onboarding.nameTracking
-        )
+        val firstAd = FOFlowManager.config.onboarding.adsOnboarding.firstOrNull()
+
+        if (firstAd != null) {
+            val (layoutRes, spaceName) = firstAd
+
+            FOFlowManager.callback?.showNativeAds(
+                spaceName,
+                layoutAds,
+                if (FOFlowManager.isShowDefaultAds(idScreen))
+                    R.layout.native_ads_default
+                else layoutRes,
+                FOFlowManager.config.onboarding.nameTracking
+            )
+        } else {
+            layoutAds.visibility = View.GONE
+        }
         setupViewPage()
         initListener()
 
