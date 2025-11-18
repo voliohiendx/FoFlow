@@ -21,7 +21,6 @@ data class OnboardingConfig(
 
         private var onboardingLayoutRes: Int = 0
         private var itemOnboarding: Int = 0
-        private var itemAdsFullOnboarding: Int = 0
 
         private var ads: List<Pair<Int, String>> = emptyList()
         private var adsFull: List<Triple<Int, Int, String>> = emptyList()
@@ -32,9 +31,6 @@ data class OnboardingConfig(
 
         fun setOnboardingLayout(@LayoutRes res: Int) = apply { this.onboardingLayoutRes = res }
         fun setItemOnboarding(@LayoutRes res: Int) = apply { this.itemOnboarding = res }
-        fun setItemAdsFullOnboarding(@LayoutRes res: Int) =
-            apply { this.itemAdsFullOnboarding = res }
-
         fun setAdsOnboarding(list: List<Pair<Int, String>>) = apply { this.ads = list }
         fun setAdsOnboardingFull(list: List<Triple<Int, Int, String>>) =
             apply { this.adsFull = list }
@@ -46,7 +42,6 @@ data class OnboardingConfig(
         fun build(): OnboardingConfig {
             require(onboardingLayoutRes != 0) { "onboardingLayoutRes must be set" }
             require(itemOnboarding != 0) { "itemOnboarding must be set" }
-            require(itemAdsFullOnboarding != 0) { "itemAdsFullOnboarding must be set" }
 
             return OnboardingConfig(
                 onboardingLayoutRes = onboardingLayoutRes,
