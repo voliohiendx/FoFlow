@@ -10,13 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.R
 import volio.b1.foflow.adapter.OnboardingAdapter.AdsVH
 import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingAdapter(
-    private val items: List<OnboardingItemModel>,
+    private val items: List<Pair<OnboardingItemModel, Int>>,
     private val onLoadAds: (ViewGroup, Int) -> Unit,
     private val onNextPage: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -83,14 +84,15 @@ class OnboardingAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            OnboardingItemModel.TYPE_ADS -> {
-                val view = inflater.inflate(R.layout.item_ads_full_onboarding, parent, false)
-                AdsVH(view)
+            FOFlowManager.config.onboarding.itemOnboarding -> {
+                val view =
+                    inflater.inflate(viewType, parent, false)
+                NormalVH(view)
             }
 
             else -> {
-                val view = inflater.inflate(R.layout.item_onboarding, parent, false)
-                NormalVH(view)
+                val view = inflater.inflate(viewType, parent, false)
+                AdsVH(view)
             }
         }
     }
@@ -99,13 +101,13 @@ class OnboardingAdapter(
 
         val item = items[position]
         when (holder) {
-            is NormalVH -> holder.bind(item)
-            is AdsVH -> holder.bind(item)
+            is NormalVH -> holder.bind(item.first)
+            is AdsVH -> holder.bind(item.first)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].type
+        return items[position].second
     }
 
     override fun getItemCount() = items.size

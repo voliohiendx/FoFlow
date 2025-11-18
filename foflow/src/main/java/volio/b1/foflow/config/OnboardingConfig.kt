@@ -6,13 +6,11 @@ import volio.b1.foflow.model.OnboardingItemModel
 data class OnboardingConfig(
     @LayoutRes val onboardingLayoutRes: Int,
     @LayoutRes val itemOnboarding: Int,
-    @LayoutRes val itemAdsFullOnboarding: Int,
-
     // List Ads (Normal + Namespace)
     val adsOnboarding: List<Pair<Int, String>>,
 
-    // List Ads Full + Namespace
-    val adsOnboardingFull: List<Pair<Int, String>>,
+    //Frame Ads Full + List Ads Full + Namespace
+    val adsOnboardingFull: List<Triple<Int, Int, String>>,
 
     val nameTracking: String,
     val showAdsInter: Boolean,
@@ -26,7 +24,7 @@ data class OnboardingConfig(
         private var itemAdsFullOnboarding: Int = 0
 
         private var ads: List<Pair<Int, String>> = emptyList()
-        private var adsFull: List<Pair<Int, String>> = emptyList()
+        private var adsFull: List<Triple<Int, Int, String>> = emptyList()
 
         private var nameTracking: String = ""
         private var showAdsInter: Boolean = false
@@ -34,10 +32,12 @@ data class OnboardingConfig(
 
         fun setOnboardingLayout(@LayoutRes res: Int) = apply { this.onboardingLayoutRes = res }
         fun setItemOnboarding(@LayoutRes res: Int) = apply { this.itemOnboarding = res }
-        fun setItemAdsFullOnboarding(@LayoutRes res: Int) = apply { this.itemAdsFullOnboarding = res }
+        fun setItemAdsFullOnboarding(@LayoutRes res: Int) =
+            apply { this.itemAdsFullOnboarding = res }
 
-        fun setAdsOnboarding(list: List<Pair< Int, String>>) = apply { this.ads = list }
-        fun setAdsOnboardingFull(list: List<Pair< Int, String>>) = apply { this.adsFull = list }
+        fun setAdsOnboarding(list: List<Pair<Int, String>>) = apply { this.ads = list }
+        fun setAdsOnboardingFull(list: List<Triple<Int, Int, String>>) =
+            apply { this.adsFull = list }
 
         fun setNameTracking(name: String) = apply { this.nameTracking = name }
         fun setShowAdsInter(show: Boolean) = apply { this.showAdsInter = show }
@@ -51,7 +51,6 @@ data class OnboardingConfig(
             return OnboardingConfig(
                 onboardingLayoutRes = onboardingLayoutRes,
                 itemOnboarding = itemOnboarding,
-                itemAdsFullOnboarding = itemAdsFullOnboarding,
                 adsOnboarding = ads,
                 adsOnboardingFull = adsFull,
                 nameTracking = nameTracking,

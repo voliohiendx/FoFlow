@@ -36,7 +36,6 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var tvGetStarted: TextView
     private lateinit var dotsIndicator: DotsIndicator
     private lateinit var layoutAds: FrameLayout
-    var indexAds = 0
     val adapter by lazy {
         var indexAds = 0
 
@@ -49,7 +48,7 @@ class OnboardingActivity : AppCompatActivity() {
                     indexAds++
 
                     if (adPair != null) {
-                        val (layoutRes, ns) = adPair
+                        val (frame, layoutRes, ns) = adPair
                         if (FOFlowManager.isEnableShowAds(ns)) {
                             item to adPair
                         } else null
@@ -59,17 +58,22 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             }
 
-        // Update lại danh sách item (đã lọc bớt các item ads ẩn)
         FOFlowManager.setDataOnboardingItem(
             filteredItemsWithAdsData.map { it.first }
         )
 
+        val itemsForAdapter: List<Pair<OnboardingItemModel, Int>> =
+            filteredItemsWithAdsData.map { (item, adData) ->
+                val layoutRes = adData?.first ?: FOFlowManager.config.onboarding.itemOnboarding
+                item to layoutRes
+            }
+
         OnboardingAdapter(
-            items = filteredItemsWithAdsData.map { it.first },
+            items = itemsForAdapter,
 
             onLoadAds = { view, position ->
                 val adData = filteredItemsWithAdsData.getOrNull(position)?.second
-                adData?.let { (layoutRes, ns) ->
+                adData?.let { (frame, layoutRes, ns) ->
                     FOFlowManager.callback?.showNativeAds(
                         ns,
                         view,

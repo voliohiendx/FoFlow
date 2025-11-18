@@ -178,16 +178,8 @@ object FOFlowManager {
         )
     }
 
-    fun setItemAdsFullOnboarding(@LayoutRes itemAdsFullOnboarding: Int) {
-        config = config.copy(
-            onboarding = config.onboarding.copy(
-                itemAdsFullOnboarding = itemAdsFullOnboarding
-            )
-        )
-    }
-
     fun setOnboardingLayoutAdsFull(
-        list: List<Pair<Int, String>>
+        list: List<Triple<Int,Int, String>>
     ) {
         config = config.copy(
             onboarding = config.onboarding.copy(
