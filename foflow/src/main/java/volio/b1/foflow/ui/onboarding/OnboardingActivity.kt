@@ -49,7 +49,6 @@ class OnboardingActivity : AppCompatActivity() {
 
         OnboardingAdapter(
             items = filteredItems,
-
             onLoadAds = { view, item ->
                 FOFlowManager.callback?.showNativeAds(
                     item.spaceAds,

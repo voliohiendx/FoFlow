@@ -104,8 +104,8 @@ class OnboardingAdapter(
         return items[position].layoutItem
     }
 
-    private fun isAdsLayout(layoutId: Int): Boolean {
-        return items.any { it.layoutAds == layoutId }
+    private fun isAdsLayout(layoutItem: Int): Boolean {
+        return items.any { it.layoutItem == layoutItem }
     }
 
     override fun getItemCount() = items.size
