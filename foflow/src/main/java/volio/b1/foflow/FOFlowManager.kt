@@ -212,6 +212,14 @@ object FOFlowManager {
         )
     }
 
+    fun setShowUiApply(showUiApply: Boolean) {
+        config = config.copy(
+            language = config.language.copy(
+                showUiApply = showUiApply
+            )
+        )
+    }
+
     fun isShowDefaultAds(idScreen: String): Boolean {
         return flowData.find { it.id == idScreen }?.isShowAdsDefault ?: true
     }
