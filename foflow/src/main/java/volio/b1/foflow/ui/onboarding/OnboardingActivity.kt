@@ -37,50 +37,26 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var dotsIndicator: DotsIndicator
     private lateinit var layoutAds: FrameLayout
     val adapter by lazy {
-        var indexAds = 0
-
-        val adsFull = FOFlowManager.config.onboarding.adsOnboardingFull
-
-        val filteredItemsWithAdsData =
-            FOFlowManager.config.onboarding.items.mapIndexedNotNull { _, item ->
-                if (item.type == OnboardingItemModel.TYPE_ADS) {
-                    val adPair = adsFull.getOrNull(indexAds)
-                    indexAds++
-
-                    if (adPair != null) {
-                        val (frame, layoutRes, ns) = adPair
-                        if (FOFlowManager.isEnableShowAds(ns)) {
-                            item to adPair
-                        } else null
-                    } else null
-                } else {
-                    item to null
-                }
+        val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
+            if (item.type == OnboardingItemModel.TYPE_ADS) {
+                FOFlowManager.isEnableShowAds(item.spaceAds)
+            } else {
+                true
             }
+        }
 
-        FOFlowManager.setDataOnboardingItem(
-            filteredItemsWithAdsData.map { it.first }
-        )
-
-        val itemsForAdapter: List<Pair<OnboardingItemModel, Int>> =
-            filteredItemsWithAdsData.map { (item, adData) ->
-                val layoutRes = adData?.first ?: FOFlowManager.config.onboarding.itemOnboarding
-                item to layoutRes
-            }
+        FOFlowManager.setDataOnboardingItem(filteredItems)
 
         OnboardingAdapter(
-            items = itemsForAdapter,
+            items = filteredItems,
 
-            onLoadAds = { view, position ->
-                val adData = filteredItemsWithAdsData.getOrNull(position)?.second
-                adData?.let { (frame, layoutRes, ns) ->
-                    FOFlowManager.callback?.showNativeAds(
-                        ns,
-                        view,
-                        layoutRes,
-                        FOFlowManager.config.onboarding.nameTracking
-                    )
-                }
+            onLoadAds = { view, item ->
+                FOFlowManager.callback?.showNativeAds(
+                    item.spaceAds,
+                    view,
+                    item.layoutAds,
+                    FOFlowManager.config.onboarding.nameTracking
+                )
             },
 
             onNextPage = {
@@ -98,22 +74,6 @@ class OnboardingActivity : AppCompatActivity() {
         hideNavigationBar()
         initView()
 
-        val firstAd = FOFlowManager.config.onboarding.adsOnboarding.firstOrNull()
-
-        if (firstAd != null) {
-            val (layoutRes, spaceName) = firstAd
-
-            FOFlowManager.callback?.showNativeAds(
-                spaceName,
-                layoutAds,
-                if (FOFlowManager.isShowDefaultAds(idScreen))
-                    R.layout.native_ads_default
-                else layoutRes,
-                FOFlowManager.config.onboarding.nameTracking
-            )
-        } else {
-            layoutAds.visibility = View.GONE
-        }
         setupViewPage()
         initListener()
 
@@ -179,6 +139,17 @@ class OnboardingActivity : AppCompatActivity() {
                                     navigateNext()
                                 }
                             }
+                        }
+                    }
+                } else {
+                    if (currentItem.spaceAds != "") {
+                        if (FOFlowManager.isEnableShowAds(currentItem.spaceAds)) {
+                            FOFlowManager.callback?.showNativeAds(
+                                currentItem.spaceAds,
+                                layoutAds,
+                                currentItem.layoutAds,
+                                FOFlowManager.config.onboarding.nameTracking
+                            )
                         }
                     }
                 }

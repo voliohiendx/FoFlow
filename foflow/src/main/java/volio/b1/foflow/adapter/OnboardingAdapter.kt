@@ -17,8 +17,8 @@ import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingAdapter(
-    private val items: List<Pair<OnboardingItemModel, Int>>,
-    private val onLoadAds: (ViewGroup, Int) -> Unit,
+    private val items: List<OnboardingItemModel>,
+    private val onLoadAds: (ViewGroup, OnboardingItemModel) -> Unit,
     private val onNextPage: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -58,7 +58,7 @@ class OnboardingAdapter(
         private val tvNext: TextView? = itemView.findViewById(R.id.tvNext)
         private val tvGetStarted: TextView? = itemView.findViewById(R.id.tvGetStarted)
         fun bind(item: OnboardingItemModel) {
-            onLoadAds.invoke(layoutAds, position)
+            onLoadAds.invoke(layoutAds, item)
             if (tvGetStarted != null) {
                 if (position == items.size - 1) {
                     tvGetStarted.visibility = View.VISIBLE
@@ -83,17 +83,11 @@ class OnboardingAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return when (viewType) {
-            FOFlowManager.config.onboarding.itemOnboarding -> {
-                val view =
-                    inflater.inflate(viewType, parent, false)
-                NormalVH(view)
-            }
-
-            else -> {
-                val view = inflater.inflate(viewType, parent, false)
-                AdsVH(view)
-            }
+        val view = inflater.inflate(viewType, parent, false)
+        return if (isAdsLayout(viewType)) {
+            AdsVH(view)
+        } else {
+            NormalVH(view)
         }
     }
 
@@ -101,13 +95,17 @@ class OnboardingAdapter(
 
         val item = items[position]
         when (holder) {
-            is NormalVH -> holder.bind(item.first)
-            is AdsVH -> holder.bind(item.first)
+            is NormalVH -> holder.bind(item)
+            is AdsVH -> holder.bind(item)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].second
+        return items[position].layoutItem
+    }
+
+    private fun isAdsLayout(layoutId: Int): Boolean {
+        return items.any { it.layoutAds == layoutId }
     }
 
     override fun getItemCount() = items.size

@@ -74,22 +74,20 @@ class MainActivity : AppCompatActivity() {
             ).onboarding(
                 OnboardingConfig.Builder()
                     .setOnboardingLayout(R.layout.activity_onboarding)
-                    .setItemOnboarding(R.layout.item_onboarding)
-                    .setAdsOnboarding(listOf(R.layout.native_ads_default to "Native_Language"))
-                    .setAdsOnboardingFull(
-                        listOf(
-                            Triple(
-                                R.layout.item_ads_full_onboarding,
-                                R.layout.native_ads_default,
-                                "Native_Full_Onboarding"
-                            ),
-                            Triple(
-                                R.layout.item_ads_full_onboarding,
-                                R.layout.native_ads_default,
-                                "Native_Full_Onboarding"
-                            )
-                        )
-                    )
+//                    .setAdsOnboardingFull(
+//                        listOf(
+//                            Triple(
+//                                R.layout.item_ads_full_onboarding,
+//                                R.layout.native_ads_default,
+//                                "Native_Full_Onboarding"
+//                            ),
+//                            Triple(
+//                                R.layout.item_ads_full_onboarding,
+//                                R.layout.native_ads_default,
+//                                "Native_Full_Onboarding"
+//                            )
+//                        )
+//                    )
                     .setNameTracking("").setShowAdsInter(false)
                     .setItems(listOf()).build()
             ).build()

@@ -6,6 +6,9 @@ data class OnboardingItemModel(
     val pathImage: String,
     val adsVisibility: Int,
     val type: Int = TYPE_NORMAL,
+    val layoutAds: Int = 0,
+    val layoutItem: Int = 0,
+    val spaceAds: String = "",
     val timeDelayNextScreenAdsFull: Long = 0
 ) {
     companion object {
