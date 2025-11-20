@@ -1,7 +1,6 @@
 package volio.b1.foflow.ui.onboarding
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -11,9 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.forEachIndexed
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.OnboardingAdapter
@@ -21,7 +17,6 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import volio.b1.foflow.R
 import volio.b1.foflow.utils.setPreventDoubleClick
 import androidx.core.view.isNotEmpty
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,7 +34,7 @@ class OnboardingActivity : AppCompatActivity() {
     val adapter by lazy {
         val filteredItems = FOFlowManager.config.onboarding.items.filter { item ->
             if (item.type == OnboardingItemModel.TYPE_ADS) {
-                FOFlowManager.isEnableShowAds(item.spaceAds)
+                FOFlowManager.isEnableShowAds(item.adsData?.spaceAds ?: "")
             } else {
                 true
             }
@@ -50,12 +45,14 @@ class OnboardingActivity : AppCompatActivity() {
         OnboardingAdapter(
             items = filteredItems,
             onLoadAds = { view, item ->
-                FOFlowManager.callback?.showNativeAds(
-                    item.spaceAds,
-                    view,
-                    item.layoutAds,
-                    FOFlowManager.config.onboarding.nameTracking
-                )
+                item.adsData?.let {
+                    FOFlowManager.callback?.showNativeAds(
+                        it.spaceAds,
+                        view,
+                        it.layoutAds,
+                        FOFlowManager.config.onboarding.nameTracking
+                    )
+                }
             },
 
             onNextPage = {
@@ -161,39 +158,40 @@ class OnboardingActivity : AppCompatActivity() {
 
     fun loadAds(position: Int) {
         val currentItem = FOFlowManager.config.onboarding.items[position]
-        layoutAds.visibility =
-            if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
-
-        autoScrollJob?.cancel()
-
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
+        currentItem.adsData?.let {adsData->
+            layoutAds.visibility =
+                if (layoutAds.isNotEmpty()) adsData.adsVisibility else View.GONE
 
-        if (isAds) {
-            val delayMs = currentItem.timeDelayNextScreenAdsFull
-            if (delayMs > 0) {
-                autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
-                    delay(delayMs)
-                    if (position < adapter.itemCount - 1) {
-                        withContext(Dispatchers.Main) {
-                            vpTemplate.setCurrentItem(position + 1, true)
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            navigateNext()
+            autoScrollJob?.cancel()
+
+            if (isAds) {
+                val delayMs = adsData.timeDelayNextScreenAdsFull
+                if (delayMs > 0) {
+                    autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
+                        delay(delayMs)
+                        if (position < adapter.itemCount - 1) {
+                            withContext(Dispatchers.Main) {
+                                vpTemplate.setCurrentItem(position + 1, true)
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                navigateNext()
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            if (currentItem.spaceAds != "") {
-                if (FOFlowManager.isEnableShowAds(currentItem.spaceAds)) {
-                    FOFlowManager.callback?.showNativeAds(
-                        currentItem.spaceAds,
-                        layoutAds,
-                        currentItem.layoutAds,
-                        FOFlowManager.config.onboarding.nameTracking
-                    )
+            } else {
+                if (adsData.spaceAds != "") {
+                    if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
+                        FOFlowManager.callback?.showNativeAds(
+                            adsData.spaceAds,
+                            layoutAds,
+                            adsData.layoutAds,
+                            FOFlowManager.config.onboarding.nameTracking
+                        )
+                    }
                 }
             }
         }

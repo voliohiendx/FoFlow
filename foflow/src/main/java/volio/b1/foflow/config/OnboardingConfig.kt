@@ -1,6 +1,7 @@
 package volio.b1.foflow.config
 
 import androidx.annotation.LayoutRes
+import volio.b1.foflow.model.AdsOnboardingModel
 import volio.b1.foflow.model.OnboardingItemModel
 
 data class OnboardingConfig(

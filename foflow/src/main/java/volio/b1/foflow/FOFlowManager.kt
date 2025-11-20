@@ -2,7 +2,6 @@ package volio.b1.foflow
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.annotation.LayoutRes
 import volio.b1.foflow.model.FlowModel
 import volio.b1.foflow.ui.language.LanguageActivity
@@ -10,6 +9,7 @@ import volio.b1.foflow.ui.onboarding.OnboardingActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import volio.b1.foflow.config.FoFlowConfig
+import volio.b1.foflow.model.AdsOnboardingModel
 import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.FOFlowCallback
 import java.io.InputStream
@@ -154,7 +154,7 @@ object FOFlowManager {
         )
     }
 
-     fun setOnboardingLayout(@LayoutRes onboardingLayout: Int) {
+    fun setOnboardingLayout(@LayoutRes onboardingLayout: Int) {
         config = config.copy(
             onboarding = config.onboarding.copy(
                 onboardingLayoutRes = onboardingLayout
@@ -166,6 +166,14 @@ object FOFlowManager {
         return config.onboarding.items
     }
 
+    fun setAdsOnboarding(adsData: List<AdsOnboardingModel>) {
+        var index = 0
+        config.onboarding.items.forEach { item ->
+            item.adsData = adsData.getOrNull(index)
+            index++
+        }
+    }
+
     fun setDataOnboardingItem(items: List<OnboardingItemModel>) {
         config = config.copy(
             onboarding = config.onboarding.copy(
@@ -173,6 +181,7 @@ object FOFlowManager {
             )
         )
     }
+
 
     fun setShowInterAdsOnboarding(isShow: Boolean) {
         config = config.copy(
