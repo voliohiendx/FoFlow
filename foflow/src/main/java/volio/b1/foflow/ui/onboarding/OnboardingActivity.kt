@@ -1,6 +1,7 @@
 package volio.b1.foflow.ui.onboarding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -88,9 +89,10 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.adapter = adapter
 
         dotsIndicator.attachTo(vpTemplate)
-        vpTemplate.post {
-            vpTemplate.currentItem = 0
-        }
+        vpTemplate.postDelayed({
+            Log.d("HUHUYUHUYYYYY", "setupViewPage: ")
+            vpTemplate.setCurrentItem(0, false)
+        }, 100)
     }
 
     private fun initListener() {
