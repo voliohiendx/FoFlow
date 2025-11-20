@@ -88,6 +88,9 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.adapter = adapter
 
         dotsIndicator.attachTo(vpTemplate)
+        vpTemplate.post {
+            vpTemplate.currentItem = 0
+        }
     }
 
     private fun initListener() {
@@ -99,8 +102,6 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         tvGetStarted.setPreventDoubleClick { navigateNext() }
-
-        loadAds(0)
 
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
