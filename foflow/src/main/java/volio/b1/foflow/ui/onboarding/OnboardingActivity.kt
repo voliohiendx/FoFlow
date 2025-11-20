@@ -167,6 +167,7 @@ class OnboardingActivity : AppCompatActivity() {
             autoScrollJob?.cancel()
 
             if (isAds) {
+                layoutAds.visibility = View.GONE
                 val delayMs = adsData.timeDelayNextScreenAdsFull
                 if (delayMs > 0) {
                     autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
