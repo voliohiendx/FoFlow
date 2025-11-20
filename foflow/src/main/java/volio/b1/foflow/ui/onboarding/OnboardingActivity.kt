@@ -160,6 +160,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun loadAds(position: Int) {
+        Log.d("HUHUYUHUYYYYY", "setupViewPage: "+position)
         val currentItem = FOFlowManager.config.onboarding.items[position]
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
@@ -189,7 +190,10 @@ class OnboardingActivity : AppCompatActivity() {
             } else {
                 if (adsData.spaceAds != "") {
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
+                        Log.d("HUHUYUHUYYYYY", "layoutAds: "+layoutAds.visibility)
+                        Log.d("HUHUYUHUYYYYY", "loadAds: "+position)
                         layoutAds.visibility = View.VISIBLE
+                        Log.d("HUHUYUHUYYYYY", "VISIBLE: "+layoutAds.visibility)
                         FOFlowManager.callback?.showNativeAds(
                             adsData.spaceAds,
                             layoutAds,
