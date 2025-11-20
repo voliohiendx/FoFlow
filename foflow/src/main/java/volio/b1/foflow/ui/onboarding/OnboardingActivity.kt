@@ -108,6 +108,9 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
+        layoutAds.post {
+            loadAds(0)
+        }
         onBackPressedDispatcher.addCallback(this, true) {}
     }
 
@@ -187,14 +190,12 @@ class OnboardingActivity : AppCompatActivity() {
                 if (adsData.spaceAds != "") {
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
                         layoutAds.visibility = View.VISIBLE
-                        layoutAds.post {
-                            FOFlowManager.callback?.showNativeAds(
-                                adsData.spaceAds,
-                                layoutAds,
-                                adsData.layoutAds,
-                                FOFlowManager.config.onboarding.nameTracking
-                            )
-                        }
+                        FOFlowManager.callback?.showNativeAds(
+                            adsData.spaceAds,
+                            layoutAds,
+                            adsData.layoutAds,
+                            FOFlowManager.config.onboarding.nameTracking
+                        )
                     }
                 }
             }
