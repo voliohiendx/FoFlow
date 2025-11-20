@@ -89,10 +89,6 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.adapter = adapter
 
         dotsIndicator.attachTo(vpTemplate)
-        vpTemplate.postDelayed({
-            Log.d("HUHUYUHUYYYYY", "setupViewPage: ")
-            vpTemplate.setCurrentItem(0, false)
-        }, 1000)
     }
 
     private fun initListener() {
@@ -160,7 +156,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun loadAds(position: Int) {
-        Log.d("HUHUYUHUYYYYY", "setupViewPage: "+position)
+        Log.d("HUHUYUHUYYYYY", "setupViewPage: " + position)
         val currentItem = FOFlowManager.config.onboarding.items[position]
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
@@ -191,12 +187,14 @@ class OnboardingActivity : AppCompatActivity() {
                 if (adsData.spaceAds != "") {
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
                         layoutAds.visibility = View.VISIBLE
-                        FOFlowManager.callback?.showNativeAds(
-                            adsData.spaceAds,
-                            layoutAds,
-                            adsData.layoutAds,
-                            FOFlowManager.config.onboarding.nameTracking
-                        )
+                        layoutAds.post {
+                            FOFlowManager.callback?.showNativeAds(
+                                adsData.spaceAds,
+                                layoutAds,
+                                adsData.layoutAds,
+                                FOFlowManager.config.onboarding.nameTracking
+                            )
+                        }
                     }
                 }
             }
