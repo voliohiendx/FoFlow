@@ -72,10 +72,8 @@ class OnboardingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_onboarding)
         hideNavigationBar()
         initView()
-
         setupViewPage()
         initListener()
-
     }
 
     private fun initView() {
@@ -96,12 +94,6 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        val vpTemplate = findViewById<ViewPager2>(R.id.vpTemplate)
-        val tvNext = findViewById<TextView>(R.id.tvNext)
-        val tvGetStarted = findViewById<TextView>(R.id.tvGetStarted)
-        val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
-        val layoutAds = findViewById<FrameLayout>(R.id.layoutAds)
-
         tvGetStarted.visibility = View.INVISIBLE
 
         tvNext.setPreventDoubleClick {
@@ -111,51 +103,12 @@ class OnboardingActivity : AppCompatActivity() {
 
         tvGetStarted.setPreventDoubleClick { navigateNext() }
 
+        loadAds(0)
+
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
-                val currentItem = FOFlowManager.config.onboarding.items[position]
-                layoutAds.visibility =
-                    if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
-
-                autoScrollJob?.cancel()
-
-                val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
-                val isLast = position == adapter.itemCount - 1
-
-                if (isAds) {
-                    val delayMs = currentItem.timeDelayNextScreenAdsFull
-                    if (delayMs > 0) {
-                        autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
-                            delay(delayMs)
-                            if (position < adapter.itemCount - 1) {
-                                withContext(Dispatchers.Main) {
-                                    vpTemplate.setCurrentItem(position + 1, true)
-                                }
-                            } else {
-                                withContext(Dispatchers.Main) {
-                                    navigateNext()
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (currentItem.spaceAds != "") {
-                        if (FOFlowManager.isEnableShowAds(currentItem.spaceAds)) {
-                            FOFlowManager.callback?.showNativeAds(
-                                currentItem.spaceAds,
-                                layoutAds,
-                                currentItem.layoutAds,
-                                FOFlowManager.config.onboarding.nameTracking
-                            )
-                        }
-                    }
-                }
-
-                dotsIndicator.visibility = if (isAds) View.INVISIBLE else View.VISIBLE
-                tvGetStarted.visibility = if (!isAds && isLast) View.VISIBLE else View.INVISIBLE
-                tvNext.visibility = if (!isAds && !isLast) View.VISIBLE else View.INVISIBLE
+                loadAds(position)
             }
         })
 
@@ -204,6 +157,50 @@ class OnboardingActivity : AppCompatActivity() {
             view.setPadding(0, 0, 0, 0)
             insets
         }
+    }
+
+    fun loadAds(position: Int) {
+        val currentItem = FOFlowManager.config.onboarding.items[position]
+        layoutAds.visibility =
+            if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
+
+        autoScrollJob?.cancel()
+
+        val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
+        val isLast = position == adapter.itemCount - 1
+
+        if (isAds) {
+            val delayMs = currentItem.timeDelayNextScreenAdsFull
+            if (delayMs > 0) {
+                autoScrollJob = CoroutineScope(Dispatchers.IO).launch {
+                    delay(delayMs)
+                    if (position < adapter.itemCount - 1) {
+                        withContext(Dispatchers.Main) {
+                            vpTemplate.setCurrentItem(position + 1, true)
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            navigateNext()
+                        }
+                    }
+                }
+            }
+        } else {
+            if (currentItem.spaceAds != "") {
+                if (FOFlowManager.isEnableShowAds(currentItem.spaceAds)) {
+                    FOFlowManager.callback?.showNativeAds(
+                        currentItem.spaceAds,
+                        layoutAds,
+                        currentItem.layoutAds,
+                        FOFlowManager.config.onboarding.nameTracking
+                    )
+                }
+            }
+        }
+
+        dotsIndicator.visibility = if (isAds) View.INVISIBLE else View.VISIBLE
+        tvGetStarted.visibility = if (!isAds && isLast) View.VISIBLE else View.INVISIBLE
+        tvNext.visibility = if (!isAds && !isLast) View.VISIBLE else View.INVISIBLE
     }
 
     companion object {

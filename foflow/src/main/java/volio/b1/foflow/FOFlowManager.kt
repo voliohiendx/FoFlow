@@ -154,15 +154,7 @@ object FOFlowManager {
         )
     }
 
-//    fun setOnboardingLayoutAds(list: List<Pair<Int, String>>) {
-//        config = config.copy(
-//            onboarding = config.onboarding.copy(
-//                adsOnboarding = list
-//            )
-//        )
-//    }
-
-    fun setOnboardingLayout(@LayoutRes onboardingLayout: Int) {
+     fun setOnboardingLayout(@LayoutRes onboardingLayout: Int) {
         config = config.copy(
             onboarding = config.onboarding.copy(
                 onboardingLayoutRes = onboardingLayout
@@ -170,23 +162,9 @@ object FOFlowManager {
         )
     }
 
-    fun setItemOnboardingLayout(@LayoutRes itemOnboardingLayout: Int) {
-//        config = config.copy(
-//            onboarding = config.onboarding.copy(
-//                itemOnboarding = itemOnboardingLayout
-//            )
-//        )
+    fun getAllItemOnboarding(): List<OnboardingItemModel> {
+        return config.onboarding.items
     }
-
-//    fun setOnboardingLayoutAdsFull(
-//        list: List<Triple<Int,Int, String>>
-//    ) {
-//        config = config.copy(
-//            onboarding = config.onboarding.copy(
-//                adsOnboardingFull = list,
-//            )
-//        )
-//    }
 
     fun setDataOnboardingItem(items: List<OnboardingItemModel>) {
         config = config.copy(
