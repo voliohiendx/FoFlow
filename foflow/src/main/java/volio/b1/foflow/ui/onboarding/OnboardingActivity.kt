@@ -87,6 +87,7 @@ class OnboardingActivity : AppCompatActivity() {
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
 
         vpTemplate.adapter = adapter
+        vpTemplate.offscreenPageLimit = 10
 
         dotsIndicator.attachTo(vpTemplate)
     }
@@ -159,7 +160,6 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun loadAds(position: Int) {
-        Log.d("HUHUYUHUYYYYY", "setupViewPage: " + position)
         val currentItem = FOFlowManager.config.onboarding.items[position]
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
