@@ -160,10 +160,7 @@ class OnboardingActivity : AppCompatActivity() {
         val currentItem = FOFlowManager.config.onboarding.items[position]
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
-        currentItem.adsData?.let {adsData->
-            layoutAds.visibility =
-                if (layoutAds.isNotEmpty()) adsData.adsVisibility else View.GONE
-
+        currentItem.adsData?.let { adsData ->
             autoScrollJob?.cancel()
 
             if (isAds) {
@@ -194,6 +191,8 @@ class OnboardingActivity : AppCompatActivity() {
                     }
                 }
             }
+        } ?: run {
+            layoutAds.visibility = View.GONE
         }
 
         dotsIndicator.visibility = if (isAds) View.INVISIBLE else View.VISIBLE
