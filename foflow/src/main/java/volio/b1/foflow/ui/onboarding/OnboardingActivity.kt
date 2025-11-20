@@ -66,7 +66,7 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_onboarding)
+        setContentView(FOFlowManager.config.onboarding.onboardingLayoutRes)
         hideNavigationBar()
         initView()
         setupViewPage()
@@ -160,6 +160,9 @@ class OnboardingActivity : AppCompatActivity() {
         val currentItem = FOFlowManager.config.onboarding.items[position]
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
+        layoutAds.visibility =
+            if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
+
         currentItem.adsData?.let { adsData ->
             autoScrollJob?.cancel()
 
@@ -182,6 +185,7 @@ class OnboardingActivity : AppCompatActivity() {
             } else {
                 if (adsData.spaceAds != "") {
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
+                        layoutAds.visibility = View.VISIBLE
                         FOFlowManager.callback?.showNativeAds(
                             adsData.spaceAds,
                             layoutAds,
@@ -191,8 +195,6 @@ class OnboardingActivity : AppCompatActivity() {
                     }
                 }
             }
-        } ?: run {
-            layoutAds.visibility = View.GONE
         }
 
         dotsIndicator.visibility = if (isAds) View.INVISIBLE else View.VISIBLE
