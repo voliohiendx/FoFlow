@@ -92,7 +92,7 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.postDelayed({
             Log.d("HUHUYUHUYYYYY", "setupViewPage: ")
             vpTemplate.setCurrentItem(0, false)
-        }, 100)
+        }, 1000)
     }
 
     private fun initListener() {
@@ -165,7 +165,7 @@ class OnboardingActivity : AppCompatActivity() {
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
         layoutAds.visibility =
-            View.VISIBLE
+            if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
 
         currentItem.adsData?.let { adsData ->
             autoScrollJob?.cancel()
@@ -189,12 +189,8 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             } else {
                 if (adsData.spaceAds != "") {
-                    layoutAds.visibility = View.VISIBLE
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
-                        Log.d("HUHUYUHUYYYYY", "layoutAds: "+layoutAds.visibility)
-                        Log.d("HUHUYUHUYYYYY", "loadAds: "+position)
                         layoutAds.visibility = View.VISIBLE
-                        Log.d("HUHUYUHUYYYYY", "VISIBLE: "+layoutAds.visibility)
                         FOFlowManager.callback?.showNativeAds(
                             adsData.spaceAds,
                             layoutAds,
