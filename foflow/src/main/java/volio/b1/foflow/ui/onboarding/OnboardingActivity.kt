@@ -165,7 +165,7 @@ class OnboardingActivity : AppCompatActivity() {
         val isAds = currentItem.type == OnboardingItemModel.TYPE_ADS
         val isLast = position == adapter.itemCount - 1
         layoutAds.visibility =
-            if (layoutAds.isNotEmpty()) currentItem.adsVisibility else View.GONE
+            View.VISIBLE
 
         currentItem.adsData?.let { adsData ->
             autoScrollJob?.cancel()
@@ -189,6 +189,7 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             } else {
                 if (adsData.spaceAds != "") {
+                    layoutAds.visibility = View.VISIBLE
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
                         Log.d("HUHUYUHUYYYYY", "layoutAds: "+layoutAds.visibility)
                         Log.d("HUHUYUHUYYYYY", "loadAds: "+position)
