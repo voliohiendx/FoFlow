@@ -64,6 +64,8 @@ class OnboardingActivity : AppCompatActivity() {
 
     private var autoScrollJob: Job? = null
 
+    private var isFirstLoadAds= true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -87,7 +89,7 @@ class OnboardingActivity : AppCompatActivity() {
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
 
         vpTemplate.adapter = adapter
-        vpTemplate.offscreenPageLimit = 10
+        vpTemplate.offscreenPageLimit = 2
 
         dotsIndicator.attachTo(vpTemplate)
     }
@@ -110,9 +112,6 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
-        layoutAds.post {
-            loadAds(0)
-        }
         onBackPressedDispatcher.addCallback(this, true) {}
     }
 
@@ -190,13 +189,18 @@ class OnboardingActivity : AppCompatActivity() {
             } else {
                 if (adsData.spaceAds != "") {
                     if (FOFlowManager.isEnableShowAds(adsData.spaceAds)) {
-                        layoutAds.visibility = View.VISIBLE
-                        FOFlowManager.callback?.showNativeAds(
-                            adsData.spaceAds,
-                            layoutAds,
-                            adsData.layoutAds,
-                            FOFlowManager.config.onboarding.nameTracking
-                        )
+                        if (isFirstLoadAds){
+                            layoutAds.post {
+                                layoutAds.visibility = View.VISIBLE
+                                FOFlowManager.callback?.showNativeAds(
+                                    adsData.spaceAds,
+                                    layoutAds,
+                                    adsData.layoutAds,
+                                    FOFlowManager.config.onboarding.nameTracking
+                                )
+                            }
+                            isFirstLoadAds= false
+                        }
                     }
                 }
             }
