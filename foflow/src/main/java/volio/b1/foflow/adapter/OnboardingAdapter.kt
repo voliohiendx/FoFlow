@@ -17,9 +17,9 @@ import volio.b1.foflow.model.OnboardingItemModel
 import volio.b1.foflow.utils.setPreventDoubleClick
 
 class OnboardingAdapter(
-    private val items: List<OnboardingItemModel>,
-    private val onLoadAds: (ViewGroup, OnboardingItemModel) -> Unit,
-    private val onNextPage: () -> Unit
+    val items: List<OnboardingItemModel>,
+    val onLoadAds: (ViewGroup, OnboardingItemModel) -> Unit,
+    val onNextPage: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class NormalVH(itemView: View) : RecyclerView.ViewHolder(itemView) {

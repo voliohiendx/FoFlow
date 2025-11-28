@@ -105,6 +105,7 @@ class OnboardingActivity : AppCompatActivity() {
         vpTemplate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                FOFlowManager.callback?.scrollPageOnboarding(position, adapter.items[position])
                 loadAds(position)
             }
         })
