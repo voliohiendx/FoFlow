@@ -74,14 +74,14 @@ object FOFlowManager {
             when (nextScreen.id) {
                 LanguageActivity.idScreen -> {
                     context.startActivity(Intent(context, LanguageActivity::class.java).apply {
-                        putExtra(LanguageActivity.isShowOnlyScreen, isShowOnlyScreen)
+                        putExtra(LanguageActivity.keyShowOnlyScreen, isShowOnlyScreen)
                     })
                     return
                 }
 
                 OnboardingActivity.idScreen -> {
                     context.startActivity(Intent(context, OnboardingActivity::class.java).apply {
-                        putExtra(OnboardingActivity.isShowOnlyScreen, isShowOnlyScreen)
+                        putExtra(OnboardingActivity.keyShowOnlyScreen, isShowOnlyScreen)
                     })
                     return
                 }
@@ -105,14 +105,14 @@ object FOFlowManager {
             when (idScreen) {
                 LanguageActivity.idScreen -> {
                     context.startActivity(Intent(context, LanguageActivity::class.java).apply {
-                        putExtra(LanguageActivity.isShowOnlyScreen, true)
+                        putExtra(LanguageActivity.keyShowOnlyScreen, true)
                     })
                     return
                 }
 
                 OnboardingActivity.idScreen -> {
                     context.startActivity(Intent(context, OnboardingActivity::class.java).apply {
-                        putExtra(OnboardingActivity.isShowOnlyScreen, true)
+                        putExtra(OnboardingActivity.keyShowOnlyScreen, true)
                     })
                     return
                 }

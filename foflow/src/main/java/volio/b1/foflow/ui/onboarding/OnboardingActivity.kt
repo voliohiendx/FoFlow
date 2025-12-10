@@ -8,11 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.R
-import volio.b1.foflow.ui.language.LanguageActivity
 
 class OnboardingActivity : AppCompatActivity() {
-
-    var isShowOnlyScreen: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +21,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     fun addFragment() {
         isShowOnlyScreen =
-            intent?.getBooleanExtra(OnboardingActivity.isShowOnlyScreen, false) ?: false
+            intent?.getBooleanExtra(OnboardingActivity.keyShowOnlyScreen, false) ?: false
 
         FOFlowManager.config?.onboarding?.let {
             supportFragmentManager.beginTransaction()
@@ -50,6 +47,8 @@ class OnboardingActivity : AppCompatActivity() {
 
     companion object {
         val idScreen = "onboarding"
-        val isShowOnlyScreen = "isShowOnlyScreen"
+        val keyShowOnlyScreen = "isShowOnlyScreen"
+
+        var isShowOnlyScreen: Boolean = false
     }
 }
