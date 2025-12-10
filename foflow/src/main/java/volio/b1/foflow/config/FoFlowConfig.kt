@@ -1,15 +1,18 @@
 package volio.b1.foflow.config
 
-data class FoFlowConfig(
-    val language: LanguageConfig,
-    val onboarding: OnboardingConfig
-){
-    class Builder {
-        private lateinit var language: LanguageConfig
-        private lateinit var onboarding: OnboardingConfig
+import androidx.fragment.app.Fragment
 
-        fun language(config: LanguageConfig) = apply { this.language = config }
-        fun onboarding(config: OnboardingConfig) = apply { this.onboarding = config }
+
+data class FoFlowConfig(
+    var language: Fragment,
+    var onboarding: Fragment
+) {
+    class Builder {
+        private lateinit var language: Fragment
+        private lateinit var onboarding: Fragment
+
+        fun language(config: Fragment) = apply { this.language = config }
+        fun onboarding(config: Fragment) = apply { this.onboarding = config }
 
         fun build() = FoFlowConfig(language, onboarding)
     }
