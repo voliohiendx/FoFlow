@@ -15,7 +15,6 @@ object FOFlowManager {
     private var finishFOFlow: () -> Unit = {}
     private var intentWhenFinish: Intent? = null
     var config: FoFlowConfig? = null
-    var isInitDataConfig = false
 
     private val flowData = mutableListOf<FlowModel>().apply {
         add(FlowModel("language"))
@@ -31,7 +30,6 @@ object FOFlowManager {
             initDataRemote(it)
         }
         this.config = config
-        isInitDataConfig = true
     }
 
     fun initDataRemote(jsonConfig: String) {
@@ -46,12 +44,10 @@ object FOFlowManager {
         intentWhenFinish: Intent?,
         fOFlowFinish: () -> Unit
     ) {
-        if (isInitDataConfig) {
+        config?.let {
             goNextScreen(context, "", false)
             this.intentWhenFinish = intentWhenFinish
             this.finishFOFlow = fOFlowFinish
-        } else {
-            throw IllegalStateException("FOFlowManager chưa được khởi tạo. Hãy gọi FOFlowManager.initDataConfig() trước khi startFOFlow().")
         }
     }
 
@@ -100,7 +96,7 @@ object FOFlowManager {
         idScreen: String,
         intentWhenFinish: Intent?,
     ) {
-        if (isInitDataConfig) {
+        config?.let {
             this.intentWhenFinish = intentWhenFinish
             when (idScreen) {
                 LanguageActivity.idScreen -> {
@@ -117,7 +113,7 @@ object FOFlowManager {
                     return
                 }
             }
-        } else throw IllegalStateException("FOFlowManager chưa được khởi tạo. Hãy gọi FOFlowManager.initDataConfig() trước khi startFOFlow().")
+        }
     }
 
     private fun getStringAssetFile(context: Context, path: String): String? {
