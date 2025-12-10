@@ -92,7 +92,6 @@ class OnboardingAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val item = items[position]
         when (holder) {
             is NormalVH -> holder.bind(item)

@@ -13,8 +13,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.adapter.LanguageAdapter
 import volio.b1.foflow.R
@@ -31,6 +38,8 @@ class LanguageActivity : AppCompatActivity() {
     private var viewApplyLanguage: View? = null
 
     private var lastClickTime: Long = 0L
+
+    private var reloadJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -203,6 +212,7 @@ class LanguageActivity : AppCompatActivity() {
         if (FOFlowManager.config.language.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
             true, FOFlowManager.config.language.nameTracking
         )
+        startAutoReloadAds()
     }
 
     override fun onPause() {
@@ -210,6 +220,7 @@ class LanguageActivity : AppCompatActivity() {
         if (FOFlowManager.config.language.nameTracking.isNotBlank()) FOFlowManager.callback?.pushTracking(
             false, FOFlowManager.config.language.nameTracking
         )
+        stopAutoReloadAds()
     }
 
     private fun hideNavigationBar() {
@@ -223,6 +234,33 @@ class LanguageActivity : AppCompatActivity() {
             view.setPadding(0, 0, 0, 0)
             insets
         }
+    }
+
+    private fun startAutoReloadAds() {
+        if (FOFlowManager.config.language.autoAdsReload.second != "" && FOFlowManager.config.language.autoAdsReload.third > 0) {
+            if (reloadJob?.isActive == true) return
+
+            reloadJob = this.lifecycleScope.launch(Dispatchers.IO) {
+                while (isActive) {
+                    delay(FOFlowManager.config.language.autoAdsReload.third.toLong())
+                    withContext(Dispatchers.Main) {
+                        adContainer?.let {
+                            FOFlowManager.callback?.showNativeAds(
+                                FOFlowManager.config.language.autoAdsReload.second,
+                                it,
+                                FOFlowManager.config.language.autoAdsReload.first,
+                                FOFlowManager.config.language.nameTracking
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun stopAutoReloadAds() {
+        reloadJob?.cancel()
+        reloadJob = null
     }
 
     companion object {

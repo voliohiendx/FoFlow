@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
                     .setAdsLanguage(listOf(R.layout.native_ads_default to "Native_Language"))
                     .setAdsReload(listOf(R.layout.native_ads_default to "Native_Language"))
                     .setNameTracking("").setCodeLanguage("")
+                    .setAutoAdsReload(Triple(R.layout.native_ads_default, "Native_Language", 15000))
                     .setShowAdsInter(false).setItems(listOf()).build()
             ).onboarding(
                 OnboardingConfig.Builder()
