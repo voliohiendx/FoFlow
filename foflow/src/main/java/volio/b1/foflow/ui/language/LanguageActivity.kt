@@ -11,6 +11,7 @@ import volio.b1.foflow.FOFlowManager
 import volio.b1.foflow.R
 
 class LanguageActivity : AppCompatActivity() {
+    var isShowOnlyScreen: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,11 +22,13 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     fun addFragment() {
+        isShowOnlyScreen =
+            intent?.getBooleanExtra(LanguageActivity.isShowOnlyScreen, false) ?: false
+
         FOFlowManager.config?.language?.let {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.flAddFragment, it).commit()
         } ?: run {
-            val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
             FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
             finish()
         }

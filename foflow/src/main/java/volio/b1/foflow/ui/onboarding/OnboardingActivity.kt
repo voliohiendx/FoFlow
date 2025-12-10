@@ -12,6 +12,8 @@ import volio.b1.foflow.ui.language.LanguageActivity
 
 class OnboardingActivity : AppCompatActivity() {
 
+    var isShowOnlyScreen: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -21,11 +23,13 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     fun addFragment() {
+        isShowOnlyScreen =
+            intent?.getBooleanExtra(OnboardingActivity.isShowOnlyScreen, false) ?: false
+
         FOFlowManager.config?.onboarding?.let {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.flAddFragment, it).commit()
         } ?: run {
-            val isShowOnlyScreen = intent?.getBooleanExtra(isShowOnlyScreen, false) ?: false
             FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
             finish()
         }
