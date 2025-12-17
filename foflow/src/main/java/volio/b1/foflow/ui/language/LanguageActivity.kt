@@ -25,7 +25,7 @@ class LanguageActivity : AppCompatActivity() {
 
         FOFlowManager.config?.language?.let {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.flAddFragment, it).commit()
+                .replace(R.id.flAddFragment, it.invoke()).commit()
         } ?: run {
             FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
             finish()

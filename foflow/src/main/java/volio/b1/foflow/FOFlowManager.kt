@@ -52,11 +52,15 @@ object FOFlowManager {
     }
 
     fun setLanguageFragment(language: Fragment) {
-        config?.language = language
+        config?.language = {
+            language
+        }
     }
 
     fun setOnboardingFragment(onboarding: Fragment) {
-        config?.onboarding = onboarding
+        config?.onboarding = {
+            onboarding
+        }
     }
 
     fun goNextScreen(context: Context, idScreen: String, isShowOnlyScreen: Boolean) {

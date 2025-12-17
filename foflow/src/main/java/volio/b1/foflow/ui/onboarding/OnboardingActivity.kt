@@ -25,7 +25,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         FOFlowManager.config?.onboarding?.let {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.flAddFragment, it).commit()
+                .replace(R.id.flAddFragment, it.invoke()).commit()
         } ?: run {
             FOFlowManager.goNextScreen(this, idScreen, isShowOnlyScreen)
             finish()
